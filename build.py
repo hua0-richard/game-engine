@@ -35,7 +35,22 @@ def main():
     os.makedirs('lib', exist_ok=True)
     os.makedirs('include', exist_ok=True)
     if sys.platform == 'win32':
+        if len(sys.argv) > 1:
+            if sys.argv[1] == "clean":
+                try:
+                    winresult = subprocess.run('rmdir /s /q raylib include lib', shell=True, check=True, text=True, capture_output="True")
+                except Exception as e:
+                    print(e)
+                    None
+                return
         print('windows')
+        cloneRepo()
+        winresult = subprocess.run("cd raylib\\raylib-master\\src && make", shell=True, check=True, text=True, capture_output="True")
+        print(winresult.stdout)
+        shutil.copy('raylib/raylib-master/src/libraylib.a', 'lib')
+        shutil.copy('raylib/raylib-master/src/raylib.h', 'include')
+        winresult = subprocess.run("make PLATFORM=WIN", shell=True, check=True, text=True, capture_output="True")
+        print(winresult.stdout)
     elif sys.platform == 'darwin':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
