@@ -6,17 +6,14 @@ import requests
 import shutil
 
 def cloneRepo():
-     # Specify the directory path
     raylibDir = "/raylib"
-
-    # Check if the directory exists
     if os.path.isdir(raylibDir):
         print("raylib directory already exists")
         return
     else:
         url = "https://github.com/raysan5/raylib/archive/refs/heads/master.zip"
         output_zip = "raylib.zip"
-        print("downloading raylib...")
+        print("Downloading raylib...")
         response = requests.get(url, stream=True)
         if response.status_code == 200:
             with open(output_zip, "wb") as file:
@@ -37,13 +34,10 @@ def main():
     if sys.platform == 'win32':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
-                try:
-                    winresult = subprocess.run('rmdir /s /q raylib include lib', shell=True, check=True, text=True, capture_output="True")
-                except Exception as e:
-                    print(e)
-                    None
+                winresult = subprocess.run('rmdir /s /q raylib include lib', shell=True, check=True, text=True, capture_output="True")
+                winresult = subprocess.run('del main main.exe',  shell=True, check=True, text=True, capture_output="True")
                 return
-        print('windows')
+        print('Building on Windows...')
         cloneRepo()
         winresult = subprocess.run("cd raylib\\raylib-master\\src && make", shell=True, check=True, text=True, capture_output="True")
         print(winresult.stdout)
@@ -54,19 +48,17 @@ def main():
     elif sys.platform == 'darwin':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
-                macOSresult = subprocess.run("rm -rf raylib main include lib", shell=True, check=True, text=True, capture_output="True")
+                macOSresult = subprocess.run("rm -rf raylib main include lib main main.exe", shell=True, check=True, text=True, capture_output="True")
                 return
-        print('macOS')
+        print('Building on macOS...')
         cloneRepo()
         macOSresult = subprocess.run("cd raylib/raylib-master/src && make", shell=True, check=True, text=True, capture_output="True")
         print(macOSresult.stdout)
-        macOSresult = subprocess.run("cp raylib/raylib-master/src/libraylib.a lib", shell=True, check=True, text=True, capture_output="True")
-        print(macOSresult.stdout)
-        macOSresult = subprocess.run("cp raylib/raylib-master/src/raylib.h include", shell=True, check=True, text=True, capture_output="True")
-        print(macOSresult.stdout)
+        shutil.copy('raylib/raylib-master/src/libraylib.a', 'lib')
+        shutil.copy('raylib/raylib-master/src/raylib.h', 'include')
         macOSresult = subprocess.run("make PLATFORM=MAC", shell=True, check=True, text=True, capture_output="True")
         print(macOSresult.stdout)
     else:
-        print('none')
+        print('Unsupported Operating System')
 
 main()
