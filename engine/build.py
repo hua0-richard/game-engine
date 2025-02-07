@@ -31,6 +31,7 @@ def cloneRepo():
 def main():
     os.makedirs('lib', exist_ok=True)
     os.makedirs('include', exist_ok=True)
+    os.makedirs('build', exist_ok=True)
     if sys.platform == 'win32':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
