@@ -8,7 +8,7 @@ import shutil
 def cloneRepo():
     raylibDir = "/raylib"
     if os.path.isdir(raylibDir):
-        print("raylib directory already exists")
+        print("Raylib directory already exists! Skipping download...")
         return
     else:
         url = "https://github.com/raysan5/raylib/archive/refs/heads/master.zip"
