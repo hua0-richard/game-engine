@@ -34,8 +34,9 @@ def main():
     if sys.platform == 'win32':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
-                winresult = subprocess.run('rmdir /s /q raylib include lib', shell=True, check=True, text=True, capture_output="True")
-                winresult = subprocess.run('del main main.exe',  shell=True, check=True, text=True, capture_output="True")
+                winresult = subprocess.run('if exists raylib rmdir /s /q raylib', shell=True, check=True, text=True, capture_output="True")
+                winresult = subprocess.run('if main exists del main', shell=True, check=True, text=True, capture_output="True")
+                winresult = subprocess.run('if exists main.exe include/raylib.h lib/libraylib.a del main main.exe include/raylib.h lib/libraylib.a',  shell=True, check=True, text=True, capture_output="True")
                 return
         print('Building on Windows...')
         cloneRepo()
@@ -48,7 +49,7 @@ def main():
     elif sys.platform == 'darwin':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
-                macOSresult = subprocess.run("rm -rf raylib main include lib main main.exe", shell=True, check=True, text=True, capture_output="True")
+                macOSresult = subprocess.run("rm -rf raylib main include/raylib.h lib/libraylib.a main main.exe", shell=True, check=True, text=True, capture_output="True")
                 return
         print('Building on macOS...')
         cloneRepo()
