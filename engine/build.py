@@ -35,9 +35,11 @@ def main():
     if sys.platform == 'win32':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
-                winresult = subprocess.run('if exists raylib rmdir /s /q raylib', shell=True, check=True, text=True, capture_output="True")
-                winresult = subprocess.run('if main exists del build/main', shell=True, check=True, text=True, capture_output="True")
-                winresult = subprocess.run('if exists main.exe include/raylib.h lib/libraylib.a del build/main.exe include/raylib.h lib/libraylib.a',  shell=True, check=True, text=True, capture_output="True")
+                winresult = subprocess.run('if exist raylib rmdir /s /q raylib', shell=True, check=True, text=True, capture_output="True")
+                winresult = subprocess.run('if exist build\\main del build\\main', shell=True, check=True, text=True, capture_output="True")
+                files_to_delete = ["build\\main.exe", "include\\raylib.h", "lib\\libraylib.a"]
+                for file in files_to_delete:
+                    subprocess.run(f'if exist {file} del {file}', shell=True, text=True, capture_output=True)
                 return
         print('Building on Windows...')
         cloneRepo()
