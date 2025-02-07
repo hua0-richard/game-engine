@@ -6,7 +6,7 @@ import requests
 import shutil
 
 def cloneRepo():
-    raylibDir = "/raylib"
+    raylibDir = "raylib"
     if os.path.isdir(raylibDir):
         print("Raylib directory already exists! Skipping download...")
         return
