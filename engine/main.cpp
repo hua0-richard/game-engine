@@ -1,15 +1,9 @@
 #include <iostream>
-#include <raylib.h>
+#include "game.h"
 using namespace std;
 
 int main() {
-    InitWindow(800, 800, "Game");
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-
-        ClearBackground(SKYBLUE);
-
-        EndDrawing();
-    }
+    Game game(800, 600, "My Game");
+    game.loop();
     return 0;
 }
