@@ -11,4 +11,4 @@ else ifeq ($(PLATFORM),MAC)
 else
 	@echo "Error: Please specify PLATFORM=WIN or PLATFORM=MAC"
 	@exit 1
-endif
+endifat
