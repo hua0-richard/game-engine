@@ -11,7 +11,7 @@ enum class Direction
 class Pacman : public GameObject
 {
 public:
-    Pacman();
+    Pacman(Vector2 p_pos, int p_size);
     virtual ~Pacman() = default;
 
     void Update() override;

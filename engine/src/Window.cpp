@@ -2,20 +2,15 @@
 #include <raylib.h>
 #include <cstddef>
 #include <string.h>
-#include "game.h"
+#include "Window.h"
 
-
-
-Game::Game(int width, int height, std::string) {
-    this->width = width;
-    this->height = height;
-    this->name = name; 
+Window::Window() {
 }
 
-Game::~Game(){}
+Window::~Window(){}
 
-void Game::loop() {
-    InitWindow(this->width, this->height, this->name.c_str());
+void Window::Game() {
+    InitWindow(800, 800, "game");
     while (!WindowShouldClose()) {
         BeginDrawing(); 
         // this->clear();

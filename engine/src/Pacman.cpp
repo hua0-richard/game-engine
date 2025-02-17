@@ -1,6 +1,6 @@
 #include "Pacman.h"
 
-Pacman::Pacman()
+Pacman::Pacman(Vector2 p_pos, int p_size) : GameObject(p_pos, p_size)
 {
 
 }

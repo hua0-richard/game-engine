@@ -29,8 +29,8 @@ def cloneRepo():
         os.remove(output_zip)
 
 def main():
-    os.makedirs('lib', exist_ok=True)
-    os.makedirs('include', exist_ok=True)
+    os.makedirs('engine/lib', exist_ok=True)
+    os.makedirs('engine/include', exist_ok=True)
     os.makedirs('build', exist_ok=True)
     if sys.platform == 'win32':
         if len(sys.argv) > 1:
@@ -52,14 +52,14 @@ def main():
     elif sys.platform == 'darwin':
         if len(sys.argv) > 1:
             if sys.argv[1] == "clean":
-                macOSresult = subprocess.run("rm -rf raylib main include/raylib.h lib/libraylib.a build/main build/main.exe", shell=True, check=True, text=True, capture_output="True")
+                macOSresult = subprocess.run("rm -rf raylib main engine/include/raylib.h engine/lib/libraylib.a build/main build/main.exe", shell=True, check=True, text=True, capture_output="True")
                 return
         print('Building on macOS...')
         cloneRepo()
         macOSresult = subprocess.run("cd raylib/raylib-master/src && make", shell=True, check=True, text=True, capture_output="True")
         print(macOSresult.stdout)
-        shutil.copy('raylib/raylib-master/src/libraylib.a', 'lib')
-        shutil.copy('raylib/raylib-master/src/raylib.h', 'include')
+        shutil.copy('raylib/raylib-master/src/libraylib.a', 'engine/lib')
+        shutil.copy('raylib/raylib-master/src/raylib.h', 'engine/include')
         macOSresult = subprocess.run("make PLATFORM=MAC", shell=True, check=True, text=True, capture_output="True")
         print(macOSresult.stdout)
     else:
