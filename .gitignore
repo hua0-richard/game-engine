@@ -1,4 +1,5 @@
 engine/raylib/
+raylib/
 .DS_STORE
 main
 main.exe

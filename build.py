@@ -12,7 +12,7 @@ def cloneRepo():
         return
     else:
         url = "https://github.com/raysan5/raylib/archive/refs/heads/master.zip"
-        output_zip = "raylib.zip"
+        output_zip = "engine/raylib.zip"
         print("Downloading raylib...")
         response = requests.get(url, stream=True)
         if response.status_code == 200:
@@ -43,10 +43,10 @@ def main():
                 return
         print('Building on Windows...')
         cloneRepo()
-        winresult = subprocess.run("cd raylib\\raylib-master\\src && make", shell=True, check=True, text=True, capture_output="True")
+        winresult = subprocess.run("cd engine\\raylib\\raylib-master\\src && make", shell=True, check=True, text=True, capture_output="True")
         print(winresult.stdout)
-        shutil.copy('raylib/raylib-master/src/libraylib.a', 'engine\\lib')
-        shutil.copy('raylib/raylib-master/src/raylib.h', 'engine\\include')
+        shutil.copy('engine/raylib/raylib-master/src/libraylib.a', 'engine/lib')
+        shutil.copy('engine/raylib/raylib-master/src/raylib.h', 'engine/include')
         winresult = subprocess.run("make PLATFORM=WIN", shell=True, check=True, text=True, capture_output="True")
         print(winresult.stdout)
     elif sys.platform == 'darwin':
@@ -56,10 +56,10 @@ def main():
                 return
         print('Building on macOS...')
         cloneRepo()
-        macOSresult = subprocess.run("cd raylib/raylib-master/src && make", shell=True, check=True, text=True, capture_output="True")
+        macOSresult = subprocess.run("cd engine/raylib/raylib-master/src && make", shell=True, check=True, text=True, capture_output="True")
         print(macOSresult.stdout)
-        shutil.copy('raylib/raylib-master/src/libraylib.a', 'engine/lib')
-        shutil.copy('raylib/raylib-master/src/raylib.h', 'engine/include')
+        shutil.copy('engine/raylib/raylib-master/src/libraylib.a', 'engine/lib')
+        shutil.copy('engine/raylib/raylib-master/src/raylib.h', 'engine/include')
         macOSresult = subprocess.run("make PLATFORM=MAC", shell=True, check=True, text=True, capture_output="True")
         print(macOSresult.stdout)
     else:
