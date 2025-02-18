@@ -22,7 +22,7 @@ ifeq ($(PLATFORM),WIN)
 	del /q *.o
 else ifeq ($(PLATFORM),MAC)
 	@echo "Building engine for macOS..."
-	clang++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
+	g++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
 	-framework GLUT -framework OpenGL $(ENGINE_INCLUDE) -c $(ENGINE_SRC) && \
 	ar rcs $(ENGINE_LIB) *.o && \
 	rm -f *.o
@@ -39,7 +39,7 @@ ifeq ($(PLATFORM),WIN)
     -lengine -lraylib -lopengl32 -lgdi32 -lwinmm -o $(GAME_OUTPUT_WIN)
 else ifeq ($(PLATFORM),MAC)
 	@echo "Building game for macOS..."
-	clang++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
+	g++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
 	-framework GLUT -framework OpenGL $(GAME_SRC) \
 	 engine/lib/libraylib.a -L$(ENGINE_BUILD_DIR) -lengine \
 	$(GAME_INCLUDE) \
