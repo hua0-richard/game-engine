@@ -1,5 +1,8 @@
 engine/raylib
 engine/include/raylib.h
+engine/build 
+engine/lib/libraylib.a
+game/build
 .DS_STORE
 main
 main.exe
