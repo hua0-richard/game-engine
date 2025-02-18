@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/engine/include"
+                "${workspaceFolder}/engine/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/simd"
             ],
             "defines": [],
             "macFrameworkPath": [

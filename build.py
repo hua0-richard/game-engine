@@ -5,8 +5,29 @@ import zipfile
 import requests
 import shutil
 
+WIN_CLEAN = (
+    "if exist engine\\raylib rmdir /s /q engine\\raylib & "
+    "if exist build\\main del build\\main & "
+    "if exist build\\main.exe del build\\main.exe & "
+    "if exist include\\raylib.h del include\\raylib.h & "
+    "if exist lib\\libraylib.a del lib\\libraylib.a"
+)
+
+WIN_COPY_RAYLIB = 'cd engine\\raylib\\raylib-master\\src && make'
+WIN_MAKE_ENGINE = "make engine PLATFORM=WIN"
+MAC_MAKE_GAME = "make game PLATFORM=WIN"
+
+
+MAC_CLEAN = "rm -rf engine/raylib main engine/include/raylib.h engine/lib/libraylib.a build/main build/main.exe"
+
+MAC_COPY_RAYLIB = 'cd engine/raylib/raylib-master/src && make'
+MAC_MAKE_ENGINE = "make engine PLATFORM=MAC"
+MAC_MAKE_GAME = "make game PLATFORM=MAC"
+
+NONE = ''
+
 def cloneRepo():
-    raylibDir = "raylib"
+    raylibDir = "engine/raylib"
     if os.path.isdir(raylibDir):
         print("Raylib directory already exists! Skipping download...")
         return
@@ -32,37 +53,18 @@ def main():
     os.makedirs('engine/lib', exist_ok=True)
     os.makedirs('engine/include', exist_ok=True)
     os.makedirs('build', exist_ok=True)
-    if sys.platform == 'win32':
-        if len(sys.argv) > 1:
-            if sys.argv[1] == "clean":
-                winresult = subprocess.run('if exist engine\\raylib rmdir /s /q engine\\raylib', shell=True, check=True, text=True, capture_output="True")
-                winresult = subprocess.run('if exist build\\main del build\\main', shell=True, check=True, text=True, capture_output="True")
-                files_to_delete = ["build\\main.exe", "include\\raylib.h", "lib\\libraylib.a"]
-                for file in files_to_delete:
-                    subprocess.run(f'if exist {file} del {file}', shell=True, text=True, capture_output=True)
-                return
-        print('Building on Windows...')
-        cloneRepo()
-        winresult = subprocess.run("cd engine\\raylib\\raylib-master\\src && make", shell=True, check=True, text=True, capture_output="True")
-        print(winresult.stdout)
-        shutil.copy('engine/raylib/raylib-master/src/libraylib.a', 'engine/lib')
-        shutil.copy('engine/raylib/raylib-master/src/raylib.h', 'engine/include')
-        winresult = subprocess.run("make PLATFORM=WIN", shell=True, check=True, text=True, capture_output="True")
-        print(winresult.stdout)
-    elif sys.platform == 'darwin':
-        if len(sys.argv) > 1:
-            if sys.argv[1] == "clean":
-                macOSresult = subprocess.run("rm -rf engine/raylib main engine/include/raylib.h engine/lib/libraylib.a build/main build/main.exe", shell=True, check=True, text=True, capture_output="True")
-                return
-        print('Building on macOS...')
-        cloneRepo()
-        macOSresult = subprocess.run("cd engine/raylib/raylib-master/src && make", shell=True, check=True, text=True, capture_output="True")
-        print(macOSresult.stdout)
-        shutil.copy('engine/raylib/raylib-master/src/libraylib.a', 'engine/lib')
-        shutil.copy('engine/raylib/raylib-master/src/raylib.h', 'engine/include')
-        macOSresult = subprocess.run("make PLATFORM=MAC", shell=True, check=True, text=True, capture_output="True")
-        print(macOSresult.stdout)
-    else:
-        print('Unsupported Operating System')
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "clean":
+            result = subprocess.run(WIN_CLEAN if os.name == "nt" else MAC_CLEAN if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
+            return
+    print('Building...')
+    cloneRepo()
+    macOSresult = subprocess.run(WIN_COPY_RAYLIB if os.name == "nt" else MAC_COPY_RAYLIB if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
+    print(macOSresult.stdout)
+    shutil.copy('engine/raylib/raylib-master/src/libraylib.a', 'engine/lib')
+    shutil.copy('engine/raylib/raylib-master/src/raylib.h', 'engine/include')
+    macOSresult = subprocess.run(WIN_MAKE_ENGINE if os.name == "nt" else MAC_MAKE_ENGINE if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
+    macOSresult = subprocess.run(WIN_MAKE_GAME if os.name == "nt" else MAC_MAKE_GAME if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
+    print(macOSresult.stdout)
 
 main()
