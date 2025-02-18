@@ -63,8 +63,14 @@ def main():
     print(macOSresult.stdout)
     shutil.copy('engine/raylib/raylib-master/src/libraylib.a', 'engine/lib')
     shutil.copy('engine/raylib/raylib-master/src/raylib.h', 'engine/include')
-    macOSresult = subprocess.run(WIN_MAKE_ENGINE if os.name == "nt" else MAC_MAKE_ENGINE if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
-    macOSresult = subprocess.run(WIN_MAKE_GAME if os.name == "nt" else MAC_MAKE_GAME if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
+    try:
+        macOSresult = subprocess.run(WIN_MAKE_ENGINE if os.name == "nt" else MAC_MAKE_ENGINE if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output=True)
+    except subprocess.CalledProcessError as e:
+        print(e.stderr)
+    try:
+        macOSresult = subprocess.run(WIN_MAKE_GAME if os.name == "nt" else MAC_MAKE_GAME if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
+    except subprocess.CalledProcessError as e:
+        print(e.stderr)
     print(macOSresult.stdout)
 
 main()

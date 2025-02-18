@@ -5,8 +5,7 @@ class Window {
 public: 
     Window();
     ~Window();
-    void Game();
-
+    void Game(int width = 800, int height = 800, const char* title = "Game");
 };
 
 

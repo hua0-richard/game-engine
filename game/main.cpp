@@ -4,6 +4,6 @@ using namespace std;
 
 int main() {
     auto win = Window();
-    win.Game();
+    win.Game(400, 400);
     return 0;
 }

@@ -1,7 +1,7 @@
 #include <iostream> 
 #include <raylib.h>
 #include <cstddef>
-#include <string.h>
+#include <string>
 #include "Window.h"
 
 Window::Window() {
@@ -9,8 +9,8 @@ Window::Window() {
 
 Window::~Window(){}
 
-void Window::Game() {
-    InitWindow(800, 800, "Engine Game");
+void Window::Game(int width, int height, const char* title) {
+    InitWindow(width, height, title);
     while (!WindowShouldClose()) {
         BeginDrawing(); 
         // this->clear();
