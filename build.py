@@ -15,7 +15,7 @@ WIN_CLEAN = (
 
 WIN_COPY_RAYLIB = 'cd engine\\raylib\\raylib-master\\src && make'
 WIN_MAKE_ENGINE = "make engine PLATFORM=WIN"
-MAC_MAKE_GAME = "make game PLATFORM=WIN"
+WIN_MAKE_GAME = "make game PLATFORM=WIN"
 
 
 MAC_CLEAN = "rm -rf engine/raylib main engine/include/raylib.h engine/lib/libraylib.a build/main build/main.exe"
