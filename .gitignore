@@ -1,4 +1,4 @@
-engine/raylib
+engine/raylib/
 engine/include/raylib.h
 engine/build 
 engine/lib/libraylib.a
