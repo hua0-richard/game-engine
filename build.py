@@ -52,7 +52,6 @@ def cloneRepo():
 def main():
     os.makedirs('engine/lib', exist_ok=True)
     os.makedirs('engine/include', exist_ok=True)
-    os.makedirs('build', exist_ok=True)
     if len(sys.argv) > 1:
         if sys.argv[1] == "clean":
             result = subprocess.run(WIN_CLEAN if os.name == "nt" else MAC_CLEAN if os.uname().sysname == "Darwin" else NONE, shell=True, check=True, text=True, capture_output="True")
