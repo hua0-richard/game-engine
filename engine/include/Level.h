@@ -1,5 +1,5 @@
 #pragma once
-#include <vector.h>
+#include <vector>
 #include "GameObject.h"
 
 class Level {
@@ -7,9 +7,7 @@ class Level {
         Level(); 
         ~Level();
         
-        std::vector<std::vector<GameObject*>> CreateLevel(int width, int height) {
-            return nullptr;
-        }
+        void CreateLevel(int width, int height);
 
         void UpdateLevel();
         void addGameObject();
@@ -17,7 +15,9 @@ class Level {
         void updateGameObject();
 
     private:
-        std::vector<GameObject*> GameObjectList;
-
+        int height;
+        int width;
+        std::vector<std::shared_ptr<GameObject>> GameObjectList;
+        std::vector<std::vector<std::shared_ptr<GameObject>>> level;
 
 };
