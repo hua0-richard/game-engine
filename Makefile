@@ -41,7 +41,7 @@ else ifeq ($(PLATFORM),MAC)
 	@echo "Building game for macOS..."
 	clang++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
 	-framework GLUT -framework OpenGL $(GAME_SRC) \
-	-Lgame/lib engine/lib/libraylib.a -L$(ENGINE_BUILD_DIR) -lengine \
+	 engine/lib/libraylib.a -L$(ENGINE_BUILD_DIR) -lengine \
 	$(GAME_INCLUDE) \
 	-o $(GAME_OUTPUT_MAC)
 else

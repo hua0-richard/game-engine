@@ -10,14 +10,14 @@ Window::Window() {
 Window::~Window(){}
 
 void Window::Game() {
-    InitWindow(800, 800, "game");
+    InitWindow(800, 800, "Engine Game");
     while (!WindowShouldClose()) {
         BeginDrawing(); 
         // this->clear();
         // this->input();
         // this->update();
         // this->objects();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLUE);
         EndDrawing();
     }
     CloseWindow();
