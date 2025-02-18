@@ -7,7 +7,7 @@ ENGINE_LIB := $(ENGINE_BUILD_DIR)/libengine.a
 GAME_SRC := game/main.cpp
 GAME_INCLUDE := -Igame/include -Iengine/include
 GAME_BUILD_DIR := game/build
-GAME_OUTPUT_WIN := $(GAME_BUILD_DIR)/main.exe
+GAME_OUTPUT_WIN := $(GAME_BUILD_DIR)/main
 GAME_OUTPUT_MAC := $(GAME_BUILD_DIR)/main
 
 # Default target
@@ -18,8 +18,8 @@ engine:
 ifeq ($(PLATFORM),WIN)
 	@echo "Building engine for Windows..."
 	g++ -std=c++17 $(ENGINE_INCLUDE) -c $(ENGINE_SRC) && \
-	llvm-ar rcs $(ENGINE_LIB) *.obj && \
-	del *.obj
+	ar rcs $(ENGINE_LIB) *.o && \
+	del /q *.o
 else ifeq ($(PLATFORM),MAC)
 	@echo "Building engine for macOS..."
 	clang++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
@@ -36,7 +36,7 @@ game: engine
 ifeq ($(PLATFORM),WIN)
 	@echo "Building game for Windows..."
 	g++ -std=c++17 $(GAME_SRC) -Lengine/lib -L$(ENGINE_BUILD_DIR) $(GAME_INCLUDE) \
-	-lraylib -lengine -lgdi32 -lwinmm -o $(GAME_OUTPUT_WIN)
+    -lengine -lraylib -lopengl32 -lgdi32 -lwinmm -o $(GAME_OUTPUT_WIN)
 else ifeq ($(PLATFORM),MAC)
 	@echo "Building game for macOS..."
 	clang++ -std=c++17 -framework CoreVideo -framework IOKit -framework Cocoa \
