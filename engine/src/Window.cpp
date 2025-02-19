@@ -39,7 +39,7 @@ void Window::Game(int width, int height, const char* title, int tile_size) {
     auto p = std::make_shared<Player>();
     auto input = InputHandler();
     InitWindow(mainLevel.tile_size * width, mainLevel.tile_size * height, title);
-    SetTargetFPS(30);
+    SetTargetFPS(60);
     mainLevel.CreateLevel(28, 11);
     mainLevel.level[0][0] = p;
 
