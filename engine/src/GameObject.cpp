@@ -2,9 +2,8 @@
 
 
 
-GameObject::GameObject(int scale)
+GameObject::GameObject()
 {
-    this->scale = scale;
     // m_active = true;
     // m_position = p_pos;
     // m_size = p_size;
