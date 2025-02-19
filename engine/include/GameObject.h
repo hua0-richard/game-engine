@@ -4,8 +4,8 @@
 class GameObject
 {
     public:
-    GameObject(Vector2 p_pos, int p_size);
-    virtual ~GameObject() = default;
+    GameObject();
+    ~GameObject();
 
     virtual void Update();
     virtual void Draw();
@@ -16,7 +16,8 @@ class GameObject
     Vector2 SetPos(Vector2 p_position);
     int GetSize();
     int SetSize(int p_size);
-
+    virtual void DrawSelf();
+    
     protected:
     Vector2 m_position;
     int m_size;

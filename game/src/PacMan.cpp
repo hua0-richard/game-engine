@@ -1,32 +1,32 @@
-#include "PacMan.h"
+#include "Player.h"
 
-Pacman::Pacman(Vector2 p_pos, int p_size) : GameObject(p_pos, p_size)
-{
+// Pacman::Pacman(Vector2 p_pos, int p_size) : Player(p_pos, p_size)
+// {
 
-}
+// }
 
-void Pacman::Update()
-{
+// void Pacman::Update()
+// {
 
-    Movement();
-}
+//     Movement();
+// }
 
-void Pacman::Draw()
-{
+// void Pacman::Draw()
+// {
     
-}
+// }
 
-Direction Pacman::GetMoveDirection()
-{
-    return Direction();
-}
+// Direction Pacman::GetMoveDirection()
+// {
+//     return Direction();
+// }
 
-void Pacman::SetMoveDirection(Direction p_direction)
-{
+// void Pacman::SetMoveDirection(Direction p_direction)
+// {
 
-}
+// }
 
-void Pacman::Movement()
-{
+// void Pacman::Movement()
+// {
 
-}
+// }

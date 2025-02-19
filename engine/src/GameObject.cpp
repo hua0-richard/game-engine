@@ -1,12 +1,18 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject(Vector2 p_pos, int p_size)
+
+GameObject::GameObject()
 {
-    m_active = true;
-    m_position = p_pos;
-    m_size = p_size;
+    // m_active = true;
+    // m_position = p_pos;
+    // m_size = p_size;
 }
+
+GameObject::~GameObject(){
+
+}
+
 
 void GameObject::Update()
 {
@@ -44,3 +50,6 @@ int GameObject::SetSize(int p_size)
 {
     m_size = p_size;
 }
+
+
+void GameObject::DrawSelf() {}
