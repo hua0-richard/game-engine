@@ -45,14 +45,11 @@ void Window::Game(int width, int height, const char* title, int tile_size) {
 
     while (!WindowShouldClose()) {
         Window::DrawLevel(mainLevel.level, mainLevel.tile_size);
-
+        // add a function to inputhandler to handle all possible actions for the player and their associated key binds
         input.RegisterPlayerEvent(KEY_RIGHT, [&p]() { p->moveRight(); });
         input.RegisterPlayerEvent(KEY_LEFT, [&p]() { p->moveLeft(); });
         input.RegisterPlayerEvent(KEY_DOWN, [&p]() { p->moveUp(); });
         input.RegisterPlayerEvent(KEY_UP, [&p]() { p->moveDown(); });
-
-        std::cout << p->m_position.x << std::endl;
-
         // this->clear();
         // this->input();
         // this->update();

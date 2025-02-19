@@ -6,4 +6,5 @@
 class InputHandler {
     public:
     void RegisterPlayerEvent(KeyboardKey KEY, const std::function<void()>& action); 
+    void HandlePlayerEvents();
 };
