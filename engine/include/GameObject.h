@@ -6,7 +6,7 @@
 class GameObject
 {
     public:
-    GameObject();
+    GameObject(int scale = 1);
     ~GameObject();
 
     virtual void Update();
@@ -18,10 +18,12 @@ class GameObject
     Vector2 SetPos(Vector2 p_position);
     int GetSize();
     int SetSize(int p_size);
-    virtual void DrawSelf();
+    virtual void DrawSelf(int t_size);
+
+    int scale; 
+    Vector2 m_position;
     
     protected:
-    Vector2 m_position;
     int m_size;
     bool m_active;
 

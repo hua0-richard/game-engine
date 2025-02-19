@@ -6,12 +6,11 @@ class Player : public GameObject {
         Player();
         ~Player();    
 
-        void moveForward();
-        void moveBackward(); 
+        void moveUp();
+        void moveDown(); 
         void moveLeft();
         void moveRight(); 
-        void DrawSelf() override;
-
-    
-    
+        void DrawSelf(int t_size) override;
+        
+        
 }; 

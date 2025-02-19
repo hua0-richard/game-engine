@@ -2,8 +2,9 @@
 
 
 
-GameObject::GameObject()
+GameObject::GameObject(int scale)
 {
+    this->scale = scale;
     // m_active = true;
     // m_position = p_pos;
     // m_size = p_size;
@@ -51,5 +52,4 @@ int GameObject::SetSize(int p_size)
     m_size = p_size;
 }
 
-
-void GameObject::DrawSelf() {}
+void GameObject::DrawSelf(int t_size) {}

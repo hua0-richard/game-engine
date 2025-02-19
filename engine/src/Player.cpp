@@ -4,15 +4,17 @@
 #include <memory>
 #include <vector>
 
-Player::Player() {}
+Player::Player() {
+    this->m_position = {0.0f, 0.0f};
+}
 
 Player::~Player() {}
 
-void Player::moveForward() {
+void Player::moveUp() {
     this->m_position.y += 1;
 }
 
-void Player::moveBackward() {
+void Player::moveDown() {
     this->m_position.y -= 1;
 }
 
@@ -24,7 +26,7 @@ void Player::moveRight() {
     this->m_position.x += 1;
 }
 
-void Player::DrawSelf() {
-    DrawCircle(400, 300, 50, BLUE);
+void Player::DrawSelf(int t_size) {
+    DrawCircle(this->m_position.x, this->m_position.y, t_size / 2, YELLOW);
 }
 
