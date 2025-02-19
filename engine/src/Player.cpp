@@ -68,6 +68,6 @@ void Player::DrawSelf(int t_size) {
     p_position.y = static_cast<float>(p_y_fixed) / scale;
 
     // Draw the circle at the updated position
-    DrawCircle(p_position.x * t_size, p_position.y * t_size, t_size / 2, YELLOW);
+    DrawCircle(p_position.x * t_size + t_size / 2, p_position.y * t_size + t_size / 2, t_size / 2, YELLOW);
 }
 
