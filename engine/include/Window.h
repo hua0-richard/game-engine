@@ -1,6 +1,8 @@
-#include "GameObject.h"
 #ifndef WINDOW_H 
 #define WINDOW_H
+#include "GameObject.h"
+#include <memory>
+#include <vector>
 
 class Window {
 public: 

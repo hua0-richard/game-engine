@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include <memory>
+#include <vector>
 class Player : public GameObject {
     public: 
         Player();
