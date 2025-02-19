@@ -11,11 +11,11 @@ Player::Player() {
 Player::~Player() {}
 
 void Player::moveUp() {
-    this->m_position.y += 1;
+    this->m_position.y -= 1;
 }
 
 void Player::moveDown() {
-    this->m_position.y -= 1;
+    this->m_position.y += 1;
 }
 
 void Player::moveLeft() {
@@ -27,6 +27,7 @@ void Player::moveRight() {
 }
 
 void Player::DrawSelf(int t_size) {
-    DrawCircle(this->m_position.x, this->m_position.y, t_size / 2, YELLOW);
+    DrawCircle(this->m_position.x * t_size, this->m_position.y * t_size, t_size / 2, YELLOW);
+    
 }
 

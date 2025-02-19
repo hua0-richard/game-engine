@@ -22,6 +22,7 @@ class GameObject
 
     int scale; 
     Vector2 m_position;
+    Vector2 p_position;
     
     protected:
     int m_size;

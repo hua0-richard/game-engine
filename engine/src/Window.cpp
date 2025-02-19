@@ -36,20 +36,23 @@ void Window::DrawLevel(std::vector<std::vector<std::shared_ptr<GameObject>>> &le
 
 void Window::Game(int width, int height, const char* title, int tile_size) {
     auto mainLevel = Level(tile_size);
-    auto input = InputHandler();
     auto p = std::make_shared<Player>();
+    auto input = InputHandler();
     InitWindow(mainLevel.tile_size * width, mainLevel.tile_size * height, title);
     SetTargetFPS(30);
     mainLevel.CreateLevel(28, 11);
     mainLevel.level[0][0] = p;
 
+    input.RegisterPlayer(p);
+    input.RegisterPlayerEvent(KEY_RIGHT, Player::RIGHT);
+    input.RegisterPlayerEvent(KEY_LEFT, Player::LEFT);
+    input.RegisterPlayerEvent(KEY_DOWN, Player::DOWN);
+    input.RegisterPlayerEvent(KEY_UP, Player::UP);
+
     while (!WindowShouldClose()) {
         Window::DrawLevel(mainLevel.level, mainLevel.tile_size);
+        input.HandlePlayerEvents();
         // add a function to inputhandler to handle all possible actions for the player and their associated key binds
-        input.RegisterPlayerEvent(KEY_RIGHT, [&p]() { p->moveRight(); });
-        input.RegisterPlayerEvent(KEY_LEFT, [&p]() { p->moveLeft(); });
-        input.RegisterPlayerEvent(KEY_DOWN, [&p]() { p->moveUp(); });
-        input.RegisterPlayerEvent(KEY_UP, [&p]() { p->moveDown(); });
         // this->clear();
         // this->input();
         // this->update();
