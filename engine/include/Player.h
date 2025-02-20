@@ -1,25 +1,9 @@
-#include "GameObject.h"
+#include "Character.h"
 #include "Raylib.h"
 #include <memory>
 #include <vector>
-class Player : public GameObject {
+class Player : public Character {
     public: 
-        enum Action  {
-            UP,
-            DOWN,
-            LEFT,
-            RIGHT,
-            ATTACK,
-            DEFEND
-        };
-
         Player();
-        ~Player();    
-
-        void moveUp();
-        void moveDown(); 
-        void moveLeft();
-        void moveRight(); 
-        void DrawSelf(int t_size) override;
-        
+        ~Player();     
 }; 

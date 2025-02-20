@@ -2,6 +2,4 @@
 #include <memory>
 #include <vector>
 
-class Enemy : GameObject {};
-
 

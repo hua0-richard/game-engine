@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Level.h"
 #include "InputHandler.h"
+#include "Character.h"
 #include <functional>
 
 Window::Window() {
@@ -36,18 +37,18 @@ void Window::DrawLevel(std::vector<std::vector<std::shared_ptr<GameObject>>> &le
 
 void Window::Game(int width, int height, const char* title, int tile_size) {
     auto mainLevel = Level(tile_size);
-    auto p = std::make_shared<Player>();
+    auto player = std::make_shared<Player>();
     auto input = InputHandler();
     InitWindow(mainLevel.tile_size * width, mainLevel.tile_size * height, title);
     SetTargetFPS(60);
     mainLevel.CreateLevel(28, 11);
-    mainLevel.level[0][0] = p;
+    mainLevel.level[2][2] = player;
 
-    input.RegisterPlayer(p);
-    input.RegisterPlayerEvent(KEY_RIGHT, Player::RIGHT);
-    input.RegisterPlayerEvent(KEY_LEFT, Player::LEFT);
-    input.RegisterPlayerEvent(KEY_DOWN, Player::DOWN);
-    input.RegisterPlayerEvent(KEY_UP, Player::UP);
+    input.RegisterPlayer(player);
+    input.RegisterPlayerEvent(KEY_RIGHT, Character::RIGHT);
+    input.RegisterPlayerEvent(KEY_LEFT, Character::LEFT);
+    input.RegisterPlayerEvent(KEY_DOWN, Character::DOWN);
+    input.RegisterPlayerEvent(KEY_UP, Character::UP);
 
     while (!WindowShouldClose()) {
         Window::DrawLevel(mainLevel.level, mainLevel.tile_size);
