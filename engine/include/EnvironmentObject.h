@@ -2,4 +2,6 @@
 #include <memory>
 #include <vector>
 
-class EnvironmentObject : GameObject {};
+class EnvironmentObject : public GameObject {
+    
+};
