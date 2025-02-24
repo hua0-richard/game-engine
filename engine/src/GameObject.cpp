@@ -52,3 +52,5 @@ int GameObject::SetSize(int p_size)
 }
 
 void GameObject::DrawSelf(int t_size) {}
+
+// check for collisions with other game objects in the bounding box

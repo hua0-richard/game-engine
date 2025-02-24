@@ -8,3 +8,6 @@ clang++
 python buid.py
 build/*
 
+# TODO
+Add ability to load entities onto grid
+Add collision detection

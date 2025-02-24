@@ -24,8 +24,6 @@ void Window::Input() {
 }
 
 void Window::DrawLevel(std::vector<std::vector<std::shared_ptr<GameObject>>> &level, int t_size) {
-    // Some fixed width for each tile in level
-    // Will draw all objects on screen 'in scope'
     for (auto& row: level) {
         for (auto& gameObject: row) {
             if (gameObject) {
@@ -33,7 +31,6 @@ void Window::DrawLevel(std::vector<std::vector<std::shared_ptr<GameObject>>> &le
             }
         } 
     }
-
 }
 
 void Window::Game(int width, int height, const char* title, int tile_size) {
@@ -57,7 +54,8 @@ void Window::Game(int width, int height, const char* title, int tile_size) {
         Window::DrawLevel(mainLevel.level, mainLevel.tile_size);
         input.HandlePlayerEvents();
         if (IsKeyDown(KEY_E)) {
-            enemy->SeekTarget(player->p_position.x, player->p_position.y);     }
+            enemy->SeekTarget(player->GetX(), player->GetY());     
+        }
         // add a function to inputhandler to handle all possible actions for the player and their associated key binds
         // this->clear();
         // this->input();

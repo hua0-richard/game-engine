@@ -1,33 +1,18 @@
-#pragma once
-#include "GameObject.h"
+#ifndef PACMAN_H
+#define PACMAN_H
 
-enum class Direction
-{
-    RIGHT, 
-    LEFT, 
-    UP, 
-    DOWN
-};
+#include "Character.h"
 
-class Pacman : public GameObject
-{
+class PacMan : public Character {
+protected:
+    float mouth_angle;
+    bool is_mouth_opening;
+
+    void updateAnimation() override;
+    void animate(float centerX, float centerY, float radius) override;
+
 public:
-    Pacman(Vector2 p_pos, int p_size);
-    virtual ~Pacman() = default;
-
-    void Update() override;
-    void Draw() override;
-
-    Direction GetMoveDirection();
-    void SetMoveDirection(Direction p_direction);
-
-private:
-    void Movement();
-    
-    Direction moveDirection;
-    int posX;
-    int posY;
-    int speed;
-    
-
+    PacMan();
 };
+
+#endif
