@@ -3,29 +3,49 @@
 #include "InputHandler.h"
 #include "Enemy.h"
 #include "EnvironmentObject.h"
+#include "Pacman.h"
+#include "Wall.h"
 using namespace std;
 
+const int TILE_SIZE = 16; 
+
+
+void BuildGameLevel(std::shared_ptr<Level> &level) {
+    int width = level->level.size();
+    int height = level->level[0].size(); 
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            if (j == 0 || i == 0 || i == width - 1 || j == height - 1) {
+               level->AddGameObject(i, j, TILE_SIZE, std::make_shared<Wall>());
+            }
+        }
+    }
+}
+
 int main() {
-    const int TILE_SIZE = 32; 
     // Create Level Player Enemy
-    std::unique_ptr<Level> l = std::make_unique<Level>(TILE_SIZE);
+    std::shared_ptr<Level> l = std::make_shared<Level>(TILE_SIZE);
     std::unique_ptr<InputHandler> input = std::make_unique<InputHandler>();
-    std::shared_ptr<Player> player = std::make_shared<Player>();
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>();
     std::shared_ptr<EnvironmentObject> wall = std::make_shared<EnvironmentObject>();
     std::shared_ptr<EnvironmentObject> wall2 = std::make_shared<EnvironmentObject>();
 
+
+    std::shared_ptr<Pacman> pacman = std::make_shared<Pacman>();
     // Add To Level
     l->CreateLevel(20, 20);
+    
+    // Build the walls around the level
+    BuildGameLevel(l);
+    
     l->AddGameObject(3,3,TILE_SIZE, enemy);
-    l->AddGameObject(6,6,TILE_SIZE, player);
+    l->AddGameObject(8,8,TILE_SIZE, pacman);
     // l->AddGameObject(1,1,TILE_SIZE, wall);
     // l->AddGameObject(1,2,TILE_SIZE, wall);
     // l->AddGameObject(10,10,TILE_SIZE, wall2);
 
-
     // Register Player Actions
-    input->RegisterPlayer(player);
+    input->RegisterPlayer(pacman);
     input->RegisterPlayerEvent(KEY_RIGHT, Player::RIGHT);
     input->RegisterPlayerEvent(KEY_LEFT, Player::LEFT);
     input->RegisterPlayerEvent(KEY_DOWN, Player::DOWN);

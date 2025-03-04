@@ -41,7 +41,7 @@ void Window::Update() {
     // Game state updates go here
 }
 
-void Window::Render(std::unique_ptr<Level>& level) {
+void Window::Render(std::shared_ptr<Level>& level) {
     ClearBackground(BLACK);
     DrawLevel(level->level, level->tile_size);
     EndDrawing();
@@ -50,7 +50,7 @@ void Window::Render(std::unique_ptr<Level>& level) {
 void Window::Game(
     
     std::unique_ptr<InputHandler>& inputHandler,
-    std::unique_ptr<Level>& level,
+    std::shared_ptr<Level>& level,
     int width,
     int height,
     const char* title,

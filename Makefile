@@ -6,7 +6,7 @@ ENGINE_LIB := $(ENGINE_BUILD_DIR)/libengine.a
 ENGINE_OBJ_DIR := $(ENGINE_BUILD_DIR)/obj
 ENGINE_OBJS := $(patsubst engine/src/%.cpp,$(ENGINE_OBJ_DIR)/%.o,$(wildcard engine/src/*.cpp))
 
-GAME_SRC := game/main.cpp
+GAME_SRC := game/main.cpp game/src/*.cpp
 GAME_INCLUDE := -Igame/include -Iengine/include
 GAME_BUILD_DIR := game/build
 GAME_OUTPUT_WIN := $(GAME_BUILD_DIR)/main
