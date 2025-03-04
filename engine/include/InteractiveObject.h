@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 
-class InteractiveObject : GameObject {};
+class InteractiveObject : GameObject {
+    void DrawSelf(int size_t) override {};
+};
 
 #endif // INTERACTIVE_OBJECT_H
