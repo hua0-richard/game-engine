@@ -48,6 +48,7 @@ void Window::Render(std::unique_ptr<Level>& level) {
 }
 
 void Window::Game(
+    
     std::unique_ptr<InputHandler>& inputHandler,
     std::unique_ptr<Level>& level,
     int width,
@@ -55,6 +56,7 @@ void Window::Game(
     const char* title,
     int tile_size
 ) {
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(level->tile_size * width, level->tile_size * height, title);
     SetTargetFPS(60);
 
