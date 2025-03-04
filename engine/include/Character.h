@@ -35,6 +35,11 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
+
+
+    void Collision(std::shared_ptr<GameObject>& obj);
+    void CollisionAndDraw(int size_t, std::shared_ptr<GameObject>& obj);
+
 };
 
 #endif

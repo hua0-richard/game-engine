@@ -37,8 +37,10 @@ void Window::ProcessInput(std::unique_ptr<InputHandler>& inputHandler) {
     inputHandler->HandlePlayerEvents();
 }
 
-void Window::Update() {
+void Window::Update(std::shared_ptr<Level> &level) {
     // Game state updates go here
+    
+    
 }
 
 void Window::Render(std::shared_ptr<Level>& level) {
@@ -48,7 +50,6 @@ void Window::Render(std::shared_ptr<Level>& level) {
 }
 
 void Window::Game(
-    
     std::unique_ptr<InputHandler>& inputHandler,
     std::shared_ptr<Level>& level,
     int width,
@@ -62,7 +63,7 @@ void Window::Game(
 
     while (!WindowShouldClose()) {
         ProcessInput(inputHandler);
-        Update();
+        Update(level);
         Render(level);
     }
     

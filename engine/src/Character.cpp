@@ -1,5 +1,6 @@
 #include "Character.h" 
 #include <cmath>
+#include <iostream>
 
 Character::Character() {
     this->m_position = {0.0f, 0.0f};
@@ -68,6 +69,11 @@ void Character::animate(float centerX, float centerY, float radius) {
     DrawCircle(centerX, centerY, radius, YELLOW);
 }
 
+void Character::CollisionAndDraw(int t_size, std::shared_ptr<GameObject>& obj) {
+    Collision(obj);
+    DrawSelf(t_size);
+}
+
 void Character::DrawSelf(int t_size) {
     const int scale = 1000; 
     const int stepSize = 100;
@@ -97,4 +103,10 @@ void Character::DrawSelf(int t_size) {
 
     // Draw the character using the animation method
     animate(centerX, centerY, radius);
+}
+
+void Character::Collision(std::shared_ptr<GameObject>& obj) {
+    if (this->p_position.x == obj->p_position.x && this->p_position.y == obj->p_position.y) {
+        std::cout << "COLLISION" << std::endl;
+    }
 }

@@ -7,7 +7,7 @@
 #include "Wall.h"
 using namespace std;
 
-const int TILE_SIZE = 16; 
+const int TILE_SIZE = 32; 
 
 
 void BuildGameLevel(std::shared_ptr<Level> &level) {
@@ -16,7 +16,8 @@ void BuildGameLevel(std::shared_ptr<Level> &level) {
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             if (j == 0 || i == 0 || i == width - 1 || j == height - 1) {
-               level->AddGameObject(i, j, TILE_SIZE, std::make_shared<Wall>());
+                std::shared_ptr<Wall> wall = std::make_shared<Wall>();
+               level->AddGameObject(i, j, TILE_SIZE, wall);
             }
         }
     }

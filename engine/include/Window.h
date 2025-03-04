@@ -9,7 +9,7 @@
 class Window {
 private:
     void ProcessInput(std::unique_ptr<InputHandler>& inputHandler);
-    void Update();
+    void Update(std::shared_ptr<Level>& level);
     void Render(std::shared_ptr<Level>& level);
 
 public: 
