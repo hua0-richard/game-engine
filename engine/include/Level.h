@@ -1,3 +1,6 @@
+#ifndef LEVEL_H
+#define LEVEL_H
+
 #pragma once
 #include <vector>
 #include <memory>
@@ -11,7 +14,7 @@ class Level {
         Level(int t_size); 
         void CreateLevel(int width, int height);
         void UpdateLevel();
-        void addGameObject();
+        void AddGameObject(int row, int col, int t_size, std::shared_ptr<GameObject> obj);
         void removeGameObject();
         void updateGameObject();
         std::vector<std::vector<std::shared_ptr<GameObject>>> level;
@@ -22,3 +25,5 @@ class Level {
         int width;
 
 };
+
+#endif // LEVEL_H

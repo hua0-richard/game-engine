@@ -49,6 +49,9 @@
         "vector": "cpp",
         "memory": "cpp",
         "map": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "set": "cpp",
+        "__tree": "cpp",
+        "algorithm": "cpp"
     }
 }

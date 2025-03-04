@@ -17,14 +17,12 @@ COMMANDS = {
             "if exist lib\\libraylib.a del lib\\libraylib.a"
         ),
         'make_raylib': 'cd engine\\raylib\\raylib-master\\src && make',
-        'make_engine': 'make engine PLATFORM=WIN',
-        'make_game': 'make game PLATFORM=WIN'
+        'make_all': 'make all PLATFORM=WIN'
     },
     'darwin': {
         'clean': "rm -rf engine/raylib main engine/include/raylib.h engine/lib/libraylib.a build/main build/main.exe",
         'make_raylib': 'cd engine/raylib/raylib-master/src && make',
-        'make_engine': 'make engine PLATFORM=MAC',
-        'make_game': 'make game PLATFORM=MAC'
+        'make_all': 'make all PLATFORM=MAC'
     }
 }
 
@@ -34,7 +32,7 @@ def get_platform_commands():
         return COMMANDS['windows']
     elif os.uname().sysname == "Darwin":
         return COMMANDS['darwin']
-    return dict.fromkeys(['clean', 'make_raylib', 'make_engine', 'make_game'], '')
+    return dict.fromkeys(['clean', 'make_raylib', 'make_all'], '')
 
 def download_raylib():
     """Download and extract raylib if not already present."""
@@ -90,6 +88,9 @@ def main():
     # Create necessary directories
     Path('engine/lib').mkdir(parents=True, exist_ok=True)
     Path('engine/include').mkdir(parents=True, exist_ok=True)
+    Path('engine/build').mkdir(parents=True, exist_ok=True)
+    Path('engine/build/obj').mkdir(parents=True, exist_ok=True)
+    Path('game/build').mkdir(parents=True, exist_ok=True)
 
     commands = get_platform_commands()
     
@@ -102,8 +103,9 @@ def main():
     download_raylib()
     run_command(commands['make_raylib'], "Failed to build raylib")
     copy_raylib_files()
-    run_command(commands['make_engine'], "Failed to build engine")
-    run_command(commands['make_game'], "Failed to build game")
+    
+    # Build everything with a single make command
+    run_command(commands['make_all'], "Failed to build project")
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,6 @@
+#ifndef GAME_OBJECT_H
+#define GAME_OBJECT_H
+
 #pragma once
 #include "raylib.h"
 #include <memory>
@@ -20,7 +23,9 @@ class GameObject
     int SetSize(int p_size);
     virtual void DrawSelf(int t_size);
 
+    // m_position is target position
     Vector2 m_position;
+    // p_position is current position
     Vector2 p_position;
     
     protected:
@@ -29,3 +34,5 @@ class GameObject
 
 
 };
+
+#endif // GAME_OBJECT_H
