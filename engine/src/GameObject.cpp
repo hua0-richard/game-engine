@@ -22,6 +22,7 @@ void GameObject::Draw()
 {
 }
 
+
 bool GameObject::isActive()
 {
     return m_active;

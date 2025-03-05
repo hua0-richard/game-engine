@@ -27,18 +27,18 @@ public:
         DEFEND
     };
 
+    bool collision = false;
+
     Character();
     virtual ~Character();
     void DrawSelf(int size_t) override; 
+    void Collision(Vector2 pos);
 
     void moveUp();
     void moveDown();
     void moveLeft();
     void moveRight();
 
-
-    void Collision(std::shared_ptr<GameObject>& obj);
-    void CollisionAndDraw(int size_t, std::shared_ptr<GameObject>& obj);
 
 };
 

@@ -8,6 +8,7 @@
 #include "InputHandler.h"
 #include "Character.h"
 #include "Enemy.h"
+#include "Collider.h"
 #include <functional>
 
 Window::Window() {
@@ -23,7 +24,7 @@ void Window::Input() {
     
 }
 
-void Window::DrawLevel(std::vector<std::vector<std::shared_ptr<GameObject>>>& level, int t_size) {
+void Window::Update(std::vector<std::vector<std::shared_ptr<GameObject>>>& level, int t_size) {
     for (auto& row: level) {
         for (auto& gameObject: row) {
             if (gameObject) {
@@ -37,21 +38,20 @@ void Window::ProcessInput(std::unique_ptr<InputHandler>& inputHandler) {
     inputHandler->HandlePlayerEvents();
 }
 
-void Window::Update(std::shared_ptr<Level> &level) {
-    // Game state updates go here
-    
-    
-}
-
 void Window::Render(std::shared_ptr<Level>& level) {
     ClearBackground(BLACK);
-    DrawLevel(level->level, level->tile_size);
+    Update(level->level, level->tile_size);
     EndDrawing();
+}
+
+void Window::Collision(std::shared_ptr<Collider>& collider) {
+    collider->DetectCollisions();
 }
 
 void Window::Game(
     std::unique_ptr<InputHandler>& inputHandler,
     std::shared_ptr<Level>& level,
+    std::shared_ptr<Collider>& collider,
     int width,
     int height,
     const char* title,
@@ -63,8 +63,9 @@ void Window::Game(
 
     while (!WindowShouldClose()) {
         ProcessInput(inputHandler);
-        Update(level);
         Render(level);
+        Update(level->level, tile_size);
+        Collision(collider);
     }
     
     CloseWindow();

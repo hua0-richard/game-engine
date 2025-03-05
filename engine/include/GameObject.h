@@ -15,9 +15,6 @@ class GameObject
     virtual void Update();
     virtual void Draw();
 
-    void CollisionAndDraw(int t_size, std::shared_ptr<GameObject>& obj);
-    
-
     bool isActive();
     bool SetActive(bool p_active);
     Vector2 GetPos();
