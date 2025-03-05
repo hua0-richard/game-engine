@@ -27,14 +27,12 @@ void BuildGameLevel(std::shared_ptr<Level> &level, std::shared_ptr<Collider> &co
 
 int main() {
     // Create Level Player Enemy
+    std::shared_ptr<Collider> collider = std::make_shared<Collider>();
     std::shared_ptr<Level> l = std::make_shared<Level>(TILE_SIZE);
-    std::unique_ptr<InputHandler> input = std::make_unique<InputHandler>();
-    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>();
+    std::unique_ptr<InputHandler> input = std::make_unique<InputHandler>(collider);
     std::shared_ptr<EnvironmentObject> wall = std::make_shared<EnvironmentObject>();
     std::shared_ptr<EnvironmentObject> wall2 = std::make_shared<EnvironmentObject>();
-    std::shared_ptr<Collider> collider = std::make_shared<Collider>();
-
-
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>();
     std::shared_ptr<Pacman> pacman = std::make_shared<Pacman>();
     // Add To Level
     l->CreateLevel(20, 20);

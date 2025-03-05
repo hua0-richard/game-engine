@@ -2,6 +2,7 @@
 #define PACMAN_H
 
 #include "Player.h"
+#include <memory>
 
 class Pacman : public Player {
     public: 

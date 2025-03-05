@@ -29,9 +29,27 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         }
         if (std::abs(this->RigidBodies[i]->p_position.x - self->p_position.x) <= 1 && 
             std::abs(this->RigidBodies[i]->p_position.y - self->p_position.y) <= 1) {
-            self->Collision(this->RigidBodies[i]->p_position);
+            // self->Collision(this->RigidBodies[i]->p_position);
             std::cout << "collision detected - movement stopped" << std::endl;
         }
     }
 }
+
+bool Collider::Points(Vector2 p1, Vector2 p2) {
+    if (p1.x == p2.x && p1.y == p2.y) { return true; }
+    return false;
+}
+
+bool Collider::CheckRigidBodyCollisionsPlayer(Vector2 p1) {
+    for (int i = 0; i < RigidBodies.size(); i++) {
+        if (Points(p1, RigidBodies[i]->p_position)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+
 

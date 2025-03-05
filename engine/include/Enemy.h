@@ -6,6 +6,9 @@
 #include <memory>
 #include <vector>
 
+// Forward declaration
+class Collider;
+
 class Enemy : public Character {
     public:
         Enemy();

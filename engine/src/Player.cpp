@@ -5,5 +5,5 @@
 #include <vector>
 #include <cmath>
 
-Player::Player() {};
-Player::~Player() {};
+Player::Player() {}
+Player::~Player() {}

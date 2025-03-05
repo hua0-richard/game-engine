@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include "GameObject.h"
+#include "Collider.h"
 
 class Character : public GameObject {
 protected:
