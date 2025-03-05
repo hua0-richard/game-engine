@@ -36,9 +36,17 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
 }
 
 bool Collider::Points(Vector2 p1, Vector2 p2) {
-    if (p1.x == p2.x && p1.y == p2.y) { return true; }
+    int boxWidth = 1;
+    int boxHeight = 1;
+
+    // Check collision
+    if (p2.x == p1.x && p2.y == p1.y) {
+        std::cout << "collision" << std::endl;
+        return true;
+    }
     return false;
 }
+
 
 bool Collider::CheckRigidBodyCollisionsPlayer(Vector2 p1) {
     for (int i = 0; i < RigidBodies.size(); i++) {

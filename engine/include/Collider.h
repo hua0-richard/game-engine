@@ -9,7 +9,6 @@
 // Forward declaration of Character class
 class Character;
 
-// Empty file for now
 class Collider {
     public: 
     Collider();

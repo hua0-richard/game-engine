@@ -30,10 +30,14 @@ int main() {
     std::shared_ptr<Collider> collider = std::make_shared<Collider>();
     std::shared_ptr<Level> l = std::make_shared<Level>(TILE_SIZE);
     std::unique_ptr<InputHandler> input = std::make_unique<InputHandler>(collider);
-    std::shared_ptr<EnvironmentObject> wall = std::make_shared<EnvironmentObject>();
-    std::shared_ptr<EnvironmentObject> wall2 = std::make_shared<EnvironmentObject>();
+    std::shared_ptr<Wall> blob = std::make_shared<Wall>();
+    std::shared_ptr<Wall> blob2 = std::make_shared<Wall>();
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>();
     std::shared_ptr<Pacman> pacman = std::make_shared<Pacman>();
+
+
+
+
     // Add To Level
     l->CreateLevel(20, 20);
     
@@ -42,9 +46,11 @@ int main() {
     
     l->AddGameObject(3,3,TILE_SIZE, enemy);
     l->AddGameObject(8,8,TILE_SIZE, pacman);
-    // l->AddGameObject(1,1,TILE_SIZE, wall);
-    // l->AddGameObject(1,2,TILE_SIZE, wall);
-    // l->AddGameObject(10,10,TILE_SIZE, wall2);
+
+    l->AddGameObject(5,5,TILE_SIZE, blob);
+    collider->RegisterRigidBody(blob);
+    l->AddGameObject(6,6,TILE_SIZE, blob2);
+    collider->RegisterRigidBody(blob2);
 
     // Register Player Actions
     input->RegisterPlayer(pacman);

@@ -30,7 +30,7 @@ void InputHandler::HandlePlayerEvents() {
                 if (c->CheckRigidBodyCollisionsPlayer(tmp_pos)) {return; }
                 player->moveLeft();
             } else if (this->ActionPairs[key] == Player::RIGHT) {
-                tmp_pos.y += 1; 
+                tmp_pos.x += 1; 
                 if (c->CheckRigidBodyCollisionsPlayer(tmp_pos)) {return; };
                 player->moveRight();
             }
