@@ -1,12 +1,12 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-#pragma once
 #include <vector>
 #include <memory>
 #include <iostream>
 #include <tuple>
 #include "GameObject.h"
+#include "Character.h"
 
 
 class Level {

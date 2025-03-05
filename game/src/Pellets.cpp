@@ -1,4 +1,4 @@
-#include "InteractiveObject.h"
-class Pellets : public InteractiveObject {
-
+#include "ConsumableObject.h"
+class Pellets : public ConsumableObject {
+    
 };

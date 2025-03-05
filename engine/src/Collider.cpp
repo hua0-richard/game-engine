@@ -30,7 +30,6 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         if (std::abs(this->RigidBodies[i]->p_position.x - self->p_position.x) <= 1 && 
             std::abs(this->RigidBodies[i]->p_position.y - self->p_position.y) <= 1) {
             // self->Collision(this->RigidBodies[i]->p_position);
-            std::cout << "collision detected - movement stopped" << std::endl;
         }
     }
 }

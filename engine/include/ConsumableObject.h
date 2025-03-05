@@ -5,8 +5,9 @@
 #include <memory>
 #include <vector>
 
-class ConsumableObject : GameObject {
-    void DrawSelf(int size_t) override {};
+class ConsumableObject : public GameObject {
+    virtual void LoadSprite(int size_t = 0);
+    void DrawSelf(int size_t) override;
 };
 
 #endif // CONSUMABLE_OBJECT_H

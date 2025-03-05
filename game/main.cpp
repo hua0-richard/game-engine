@@ -6,6 +6,8 @@
 #include "Pacman.h"
 #include "Wall.h"
 #include "Collider.h"
+#include "ConsumableObject.h"
+
 using namespace std;
 
 const int TILE_SIZE = 32; 
@@ -20,6 +22,9 @@ void BuildGameLevel(std::shared_ptr<Level> &level, std::shared_ptr<Collider> &co
                 std::shared_ptr<Wall> wall = std::make_shared<Wall>();
                level->AddGameObject(i, j, TILE_SIZE, wall);
                collider->RegisterRigidBody(wall);
+            } else {
+                std::shared_ptr<ConsumableObject> pellet = std::make_shared<ConsumableObject>();
+                level->AddGameObject(i, j, TILE_SIZE, pellet);
             }
         }
     }
