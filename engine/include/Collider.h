@@ -15,6 +15,7 @@ class Collider {
     ~Collider();
 
     std::vector<std::shared_ptr<GameObject>> RigidBodies;
+    std::vector<std::shared_ptr<GameObject>> InteractiveObjects;
     std::vector<std::shared_ptr<Character>> CharacterBodies; 
 
     void ValidNextMove(); 

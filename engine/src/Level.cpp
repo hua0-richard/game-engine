@@ -14,4 +14,3 @@ void Level::AddGameObject(int row, int col, int t_size, std::shared_ptr<GameObje
     obj->m_position = obj->p_position;
     level[row][col] = obj;
 }
-

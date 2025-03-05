@@ -15,14 +15,17 @@ class Level {
         void CreateLevel(int width, int height);
         void UpdateLevel();
         void AddGameObject(int row, int col, int t_size, std::shared_ptr<GameObject> obj);
+        // work on these methods
         void removeGameObject();
         void updateGameObject();
+        void updateSelf(); 
         std::vector<std::vector<std::shared_ptr<GameObject>>> level;
         int tile_size; 
 
     private:
         int height;
         int width;
+        std::vector<std::shared_ptr<Character>> moveable_objects; 
 
 };
 
