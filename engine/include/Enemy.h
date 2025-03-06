@@ -14,7 +14,9 @@ class Enemy : public Character {
         Enemy();
         ~Enemy();
 
-        void SeekTarget(float x_pos, float y_pos);
+        void SeekTarget(int x_pos, int y_pos);
+        virtual void animate(float centerX, float centerY, float radius) override;
+
 };
 
 #endif

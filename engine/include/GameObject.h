@@ -32,8 +32,6 @@ class GameObject
     protected:
     int m_size;
     bool m_active;
-
-
 };
 
 #endif // GAME_OBJECT_H

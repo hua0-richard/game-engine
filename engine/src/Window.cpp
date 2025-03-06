@@ -48,10 +48,16 @@ void Window::Collision(std::shared_ptr<Collider>& collider) {
     collider->DetectCollisions();
 }
 
+void Window::EnemyPathFinding(std::shared_ptr<PathFinding> pathfinding) {
+
+    pathfinding->EnemyChase(); 
+}
+
 void Window::Game(
     std::unique_ptr<InputHandler>& inputHandler,
     std::shared_ptr<Level>& level,
     std::shared_ptr<Collider>& collider,
+    std::shared_ptr<PathFinding>& pathfinding,
     int width,
     int height,
     const char* title,
@@ -60,8 +66,9 @@ void Window::Game(
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(level->tile_size * width, level->tile_size * height, title);
     SetTargetFPS(60);
-
+    
     while (!WindowShouldClose()) {
+        EnemyPathFinding(pathfinding);
         ProcessInput(inputHandler);
         Render(level);
         Update(level->level, tile_size);

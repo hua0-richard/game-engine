@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "InputHandler.h"
 #include "Collider.h"
+#include "Pathfinding.h"
 #include <memory>
 #include <vector>
 
@@ -13,6 +14,7 @@ private:
     void Update(std::shared_ptr<Level>& level);
     void Render(std::shared_ptr<Level>& level);
     void Collision(std::shared_ptr<Collider>& collider);
+    void EnemyPathFinding(std::shared_ptr<PathFinding> pathfinding);
 
 public: 
     Window();
@@ -24,6 +26,7 @@ public:
         std::unique_ptr<InputHandler>& inputHandler,
         std::shared_ptr<Level>& level,
         std::shared_ptr<Collider>& collider,
+        std::shared_ptr<PathFinding>& pathfinding,
         int width = 800, 
         int height = 800, 
         const char* title = "Game", 

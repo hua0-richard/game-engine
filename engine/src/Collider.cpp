@@ -47,6 +47,16 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
             this->TransparentBodies[i]->Collision();
         }
     }
+
+    for (int i = 0; i < this->CharacterBodies.size(); i++) {
+        if (!this->CharacterBodies[i] || this->CharacterBodies[i].get() == self.get()) {
+            continue;
+        }
+        if (std::abs(this->CharacterBodies[i]->p_position.x - self->p_position.x) < 1 && 
+            std::abs(this->CharacterBodies[i]->p_position.y - self->p_position.y) < 1) {
+            std::cout << "enemy" << std::endl;
+        }
+    }
 }
 
 bool Collider::Points(Vector2 p1, Vector2 p2) {

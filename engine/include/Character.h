@@ -12,13 +12,14 @@ protected:
 
     // Animation related methods that can be overridden
     virtual void updateAnimation();
-    virtual void animate(float centerX, float centerY, float radius);
     
     // Helper methods
     void updatePosition(int& p_x_fixed, int& p_y_fixed, int m_x_fixed, int m_y_fixed, int stepSize);
     bool isMoving(int p_x_fixed, int p_y_fixed, int m_x_fixed, int m_y_fixed) const;
 
 public: 
+    virtual void animate(float centerX, float centerY, float radius);
+
     enum Action {
         UP,
         DOWN,

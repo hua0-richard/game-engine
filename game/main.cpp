@@ -35,6 +35,7 @@ int main() {
     // Create Level Player Enemy
     std::shared_ptr<Collider> collider = std::make_shared<Collider>();
     std::shared_ptr<Level> l = std::make_shared<Level>(TILE_SIZE);
+    std::shared_ptr<PathFinding> path = std::make_shared<PathFinding>(l);
     std::unique_ptr<InputHandler> input = std::make_unique<InputHandler>(collider);
     std::shared_ptr<Wall> blob = std::make_shared<Wall>();
     std::shared_ptr<Wall> blob2 = std::make_shared<Wall>();
@@ -49,6 +50,8 @@ int main() {
     
     l->AddGameObject(3,3,TILE_SIZE, enemy);
     l->AddGameObject(8,8,TILE_SIZE, pacman);
+    collider->RegisterCharacterBody(enemy);
+    path->enemies.push_back(enemy);
 
     l->AddGameObject(5,5,TILE_SIZE, blob);
     collider->RegisterRigidBody(blob);
@@ -66,5 +69,5 @@ int main() {
     // Create Window 
     std::unique_ptr<Window> window = std::make_unique<Window>();
 
-    window->Game(input, l, collider, 20, 20, "Pacman", TILE_SIZE);
+    window->Game(input, l, collider, path, 20, 20, "Pacman", TILE_SIZE);
 }
