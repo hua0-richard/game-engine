@@ -41,7 +41,6 @@ void Window::ProcessInput(std::unique_ptr<InputHandler>& inputHandler) {
 void Window::Render(std::shared_ptr<Level>& level) {
     ClearBackground(BLACK);
     Update(level->level, level->tile_size);
-    EndDrawing();
 }
 
 void Window::Collision(std::shared_ptr<Collider>& collider) {
@@ -49,7 +48,8 @@ void Window::Collision(std::shared_ptr<Collider>& collider) {
 }
 
 void Window::EnemyPathFinding(std::shared_ptr<PathFinding> pathfinding) {
-
+    // This is called every frame, but A* algorithm runs only every 60 frames
+    // (controlled by the frameCounter in the PathFinding class)
     pathfinding->EnemyChase(); 
 }
 
@@ -67,12 +67,23 @@ void Window::Game(
     InitWindow(level->tile_size * width, level->tile_size * height, title);
     SetTargetFPS(60);
     
+    // Print a message when the game starts
+    std::cout << "Game loop starting - enemy should start chasing player" << std::endl;
+    
     while (!WindowShouldClose()) {
-        EnemyPathFinding(pathfinding);
-        ProcessInput(inputHandler);
+        // Process game logic before rendering
+        EnemyPathFinding(pathfinding);  // Update enemy pathfinding
+        ProcessInput(inputHandler);     // Handle player input
+        Collision(collider);            // Detect and resolve collisions
+        
+        // Begin rendering frame
+        BeginDrawing();
+        
+        // Render the game world
         Render(level);
-        Update(level->level, tile_size);
-        Collision(collider);
+        
+        // End rendering frame
+        EndDrawing();
     }
     
     CloseWindow();

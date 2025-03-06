@@ -29,6 +29,9 @@ class GameObject
     // p_position is current position
     Vector2 p_position;
     
+    // Is this object collidable for pathfinding?
+    bool isCollidable = false;
+    
     protected:
     int m_size;
     bool m_active;
