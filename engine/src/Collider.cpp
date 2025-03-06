@@ -9,6 +9,10 @@ void Collider::RegisterRigidBody(std::shared_ptr<GameObject> obj) {
     this->RigidBodies.push_back(obj);
 }
 
+void Collider::RegisterTransparentBody(std::shared_ptr<GameObject> obj) {
+    this->TransparentBodies.push_back(obj);
+}
+
 void Collider::RegisterCharacterBody(std::shared_ptr<Character> character) {
     this->CharacterBodies.push_back(character);
 }
@@ -27,9 +31,20 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         if (!this->RigidBodies[i] || this->RigidBodies[i].get() == self.get()) {
             continue;
         }
-        if (std::abs(this->RigidBodies[i]->p_position.x - self->p_position.x) <= 1 && 
-            std::abs(this->RigidBodies[i]->p_position.y - self->p_position.y) <= 1) {
+        if (std::abs(this->RigidBodies[i]->p_position.x - self->p_position.x) < 1 && 
+            std::abs(this->RigidBodies[i]->p_position.y - self->p_position.y) < 1) {
             // self->Collision(this->RigidBodies[i]->p_position);
+        }
+    }
+
+    for (int i = 0; i < this->TransparentBodies.size(); i++) {
+        if (!this->TransparentBodies[i] || this->TransparentBodies[i].get() == self.get()) {
+            continue;
+        }
+        if (std::abs(this->TransparentBodies[i]->p_position.x - self->p_position.x) < 1 && 
+            std::abs(this->TransparentBodies[i]->p_position.y - self->p_position.y) < 1) {
+            std::cout << "cheese" << std::endl;
+            this->TransparentBodies[i]->Collision();
         }
     }
 }

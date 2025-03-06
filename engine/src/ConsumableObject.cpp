@@ -1,5 +1,10 @@
 #include "ConsumableObject.h"
 
+void ConsumableObject::Collision() {
+    this->consumed = true; 
+}
+
+
 void ConsumableObject::LoadSprite(int t_size) {
     float x = this->p_position.x * t_size;
     float y = this->p_position.y * t_size;
@@ -7,5 +12,8 @@ void ConsumableObject::LoadSprite(int t_size) {
 }
 
 void ConsumableObject::DrawSelf(int t_size) {
-    LoadSprite(t_size); 
+    if (!consumed) {
+        LoadSprite(t_size); 
+    }
 }
+

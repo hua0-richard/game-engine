@@ -101,7 +101,7 @@ void Character::DrawSelf(int t_size) {
     animate(centerX, centerY, radius);
 }
 
-void Character::Collision(Vector2 pos) {
+void Character::CharacterCollision(Vector2 pos) {
     this->collision = true;
     // this->m_position.y = pos.y - 1; 
 }

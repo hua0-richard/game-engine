@@ -22,6 +22,8 @@ void GameObject::Draw()
 {
 }
 
+void GameObject::Collision() {}
+
 
 bool GameObject::isActive()
 {

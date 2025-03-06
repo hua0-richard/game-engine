@@ -25,6 +25,7 @@ void BuildGameLevel(std::shared_ptr<Level> &level, std::shared_ptr<Collider> &co
             } else {
                 std::shared_ptr<ConsumableObject> pellet = std::make_shared<ConsumableObject>();
                 level->AddGameObject(i, j, TILE_SIZE, pellet);
+                collider->RegisterTransparentBody(pellet);
             }
         }
     }
@@ -39,9 +40,6 @@ int main() {
     std::shared_ptr<Wall> blob2 = std::make_shared<Wall>();
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>();
     std::shared_ptr<Pacman> pacman = std::make_shared<Pacman>();
-
-
-
 
     // Add To Level
     l->CreateLevel(20, 20);

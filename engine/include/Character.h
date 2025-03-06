@@ -33,7 +33,7 @@ public:
     Character();
     virtual ~Character();
     void DrawSelf(int size_t) override; 
-    void Collision(Vector2 pos);
+    void CharacterCollision(Vector2 pos);
 
     void moveUp();
     void moveDown();

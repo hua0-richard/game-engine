@@ -14,6 +14,7 @@ class GameObject
 
     virtual void Update();
     virtual void Draw();
+    virtual void Collision();
 
     bool isActive();
     bool SetActive(bool p_active);

@@ -6,8 +6,10 @@
 #include <vector>
 
 class ConsumableObject : public GameObject {
+    bool consumed = false; 
     virtual void LoadSprite(int size_t = 0);
     void DrawSelf(int size_t) override;
+    void Collision() override;
 };
 
 #endif // CONSUMABLE_OBJECT_H

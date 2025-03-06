@@ -53,6 +53,7 @@
         "set": "cpp",
         "__tree": "cpp",
         "algorithm": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "sstream": "cpp"
     }
 }

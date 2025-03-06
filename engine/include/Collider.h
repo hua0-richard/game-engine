@@ -15,13 +15,14 @@ class Collider {
     ~Collider();
 
     std::vector<std::shared_ptr<GameObject>> RigidBodies;
-    std::vector<std::shared_ptr<GameObject>> InteractiveObjects;
+    std::vector<std::shared_ptr<GameObject>> TransparentBodies;
     std::vector<std::shared_ptr<Character>> CharacterBodies; 
 
     void ValidNextMove(); 
 
     void RegisterCharacterBody(std::shared_ptr<Character> character); 
     void RegisterRigidBody(std::shared_ptr<GameObject> obj); 
+    void RegisterTransparentBody(std::shared_ptr<GameObject> obj);
     void DetectCollisions();
     void HandleCollisions(std::shared_ptr<Character> self);
 
