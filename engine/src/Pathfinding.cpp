@@ -31,7 +31,6 @@ void PathFinding::SetEnemyHeuristic(std::shared_ptr<Enemy>& enemy, HeuristicType
 
 void PathFinding::SetEnemySpeed(std::shared_ptr<Enemy>& enemy, float speed) {
     if (speed <= 0.0f) {
-        std::cout << "Warning: Enemy speed must be positive. Setting to default." << std::endl;
         speed = DEFAULT_ENEMY_SPEED;
     }
     
@@ -64,9 +63,9 @@ std::vector<std::vector<int>> PathFinding::Convert(std::shared_ptr<Level>& level
             
             if (environmentObj) {
                 grid[y][x] = 1; 
-                std::cout << "Environment obstacle at (" << x << "," << y << ")" << std::endl;
+                // std::cout << "Environment obstacle at (" << x << "," << y << ")" << std::endl;
             } else {
-                std::cout << "Walkable space at (" << x << "," << y << ")" << std::endl;
+                // std::cout << "Walkable space at (" << x << "," << y << ")" << std::endl;
             }
         }
     }
@@ -77,22 +76,28 @@ std::vector<std::vector<int>> PathFinding::Convert(std::shared_ptr<Level>& level
 int PathFinding::heuristic(int x1, int y1, int x2, int y2, HeuristicType type) {
     switch (type) {
         case MANHATTAN:
+            // Manhattan distance: |x1-x2| + |y1-y2|
             return std::abs(x1 - x2) + std::abs(y1 - y2);
             
         case EUCLIDEAN:
+            // Euclidean distance: sqrt((x1-x2)² + (y1-y2)²)
+            // Multiplied by 10 to keep it as integer and make it comparable to other heuristics
             {
                 double dx = x1 - x2;
                 double dy = y1 - y2;
-                return static_cast<int>(10 * sqrt(dx * dx + dy * dy));
+                return static_cast<int>(10 * std::sqrt(dx * dx + dy * dy));
             }
             
         case DIAGONAL:
+            // Diagonal/Chebyshev distance: max(|x1-x2|, |y1-y2|)
             return std::max(std::abs(x1 - x2), std::abs(y1 - y2));
             
         case NONE_HEURISTIC:
+            // No heuristic - turns A* into Dijkstra's algorithm
             return 0;
             
         default:
+            // Default to Manhattan
             return std::abs(x1 - x2) + std::abs(y1 - y2);
     }
 }
@@ -211,34 +216,25 @@ void PathFinding::UpdateEnemyPosition(std::shared_ptr<Enemy>& enemy, int nextX, 
         return;
     }
     
+    // Check if the enemy is already moving (p_position != m_position)
+    if (static_cast<int>(enemy->p_position.x) != static_cast<int>(enemy->m_position.x) ||
+        static_cast<int>(enemy->p_position.y) != static_cast<int>(enemy->m_position.y)) {
+        // Enemy is still moving to its current target, don't change direction yet
+        return;
+    }
+    
     // Calculate how many frames it should take to move one tile
     float framesPerTile = 60.0f / enemySpeeds[enemy]; // Assuming 60 FPS
     
-    // Increment the frame counter for this enemy
-    enemyFrameCounters[enemy]++;
+    // Only set the target position, the Character's DrawSelf method will handle 
+    // the smooth interpolation between p_position and m_position
+    enemy->SeekTarget(nextX, nextY);
     
-    // Calculate progress based on elapsed frames
-    movementProgress[enemy] = enemyFrameCounters[enemy] / framesPerTile;
+    // Reset counters for the next movement
+    enemyFrameCounters[enemy] = 0;
+    movementProgress[enemy] = 0.0f;
     
-    if (movementProgress[enemy] > 1.0f) {
-        movementProgress[enemy] = 1.0f;
-    }
-    
-    if (movementProgress[enemy] >= 1.0f) {
-        // Set the target position directly
-        enemy->SeekTarget(nextX, nextY);
-        // Reset counters for next movement
-        enemyFrameCounters[enemy] = 0;
-        movementProgress[enemy] = 0.0f;
-    } else {
-        // Calculate interpolated position
-        float interpX = currentX + (nextX - currentX) * movementProgress[enemy];
-        float interpY = currentY + (nextY - currentY) * movementProgress[enemy];
-        
-        // Set the interpolated position
-        Vector2 interpPos = {interpX, interpY};
-        enemy->m_position = interpPos;
-    }
+    std::cout << "Set target position to (" << nextX << "," << nextY << ")" << std::endl;
 }
 
 void PathFinding::moveEnemyAlongPath(std::shared_ptr<Enemy>& enemy, const std::vector<std::pair<int, int>>& path) {
@@ -305,89 +301,102 @@ void PathFinding::EnemyChase(HeuristicType heuristicType) {
         return;
     }
     
+    // Increment frame counter
     frameCounter++;
     
+    // For each enemy, try to continue along existing path every frame
     for (auto& enemy : enemies) {
         if (!enemy) continue;
         
+        // Initialize enemy heuristic if not set
         if (enemyHeuristics.find(enemy) == enemyHeuristics.end()) {
             enemyHeuristics[enemy] = heuristicType;
         }
         
+        // Skip enemies that are fleeing
         if (isFleeing.find(enemy) != isFleeing.end() && isFleeing[enemy]) {
+            // Check if the enemy has reached its flee target
             if (fleeTargets.find(enemy) != fleeTargets.end() && 
                 hasReachedTarget(enemy, fleeTargets[enemy])) {
+                // Enemy has reached flee target, return to chasing
+                std::cout << "Enemy reached flee target, returning to chase mode" << std::endl;
                 SetFleeingState(enemy, false);
             } else {
+                // Still fleeing, skip chase logic
                 continue;
             }
         }
         
+        // Check if the enemy has reached its current target position
         int enemyX = static_cast<int>(enemy->p_position.x);
         int enemyY = static_cast<int>(enemy->p_position.y);
         int targetX = static_cast<int>(enemy->m_position.x);
         int targetY = static_cast<int>(enemy->m_position.y);
         
+        bool needsNewPath = false;
+        
+        // If enemy has reached the current target
         if (enemyX == targetX && enemyY == targetY) {
-            continueExistingPath(enemy);
-        }
-    }
-    
-    // Only recalculate paths every 30 frames (0.5 seconds at 60 FPS)
-    if (frameCounter % 10 != 0) {
-        return;
-    }
-    
-    std::cout << "Running A* pathfinding (frame " << frameCounter << ")" << std::endl;
-    
-    for (auto& enemy : enemies) {
-        if (!enemy) {
-            std::cout << "Null enemy in enemies vector!" << std::endl;
-            continue;
-        }
-        
-        // Skip enemies that are fleeing
-        if (isFleeing.find(enemy) != isFleeing.end() && isFleeing[enemy]) {
-            continue;
-        }
-        
-        // Get current positions - make sure we're using integers for grid positions
-        int enemyX = static_cast<int>(enemy->p_position.x);
-        int enemyY = static_cast<int>(enemy->p_position.y);
-        int playerX = static_cast<int>(player->p_position.x);
-        int playerY = static_cast<int>(player->p_position.y);
-        
-        std::cout << "Enemy at (" << enemyX << "," << enemyY << "), Player at (" << playerX << "," << playerY << ")" << std::endl;
-        
-        // Make sure the positions are valid
-        if (enemyX < 0 || enemyY < 0 || playerX < 0 || playerY < 0) {
-            std::cout << "Invalid positions detected!" << std::endl;
-            continue;
-        }
-        
-        // Use the enemy's configured heuristic
-        HeuristicType currentHeuristic = enemyHeuristics[enemy];
-        
-        // Find path to player
-        std::vector<std::pair<int, int>> path = findPath(enemyX, enemyY, playerX, playerY, currentHeuristic);
-        
-        if (path.empty()) {
-            std::cout << "No valid path found from enemy to player!" << std::endl;
-            
-            // Try a straight line if A* fails
-            if (enemyX < playerX) enemy->SeekTarget(enemyX + 1, enemyY);
-            else if (enemyX > playerX) enemy->SeekTarget(enemyX - 1, enemyY);
-            else if (enemyY < playerY) enemy->SeekTarget(enemyX, enemyY + 1);
-            else if (enemyY > playerY) enemy->SeekTarget(enemyX, enemyY - 1);
+            // Check if we've reached the end of the path
+            if (currentPaths.find(enemy) == currentPaths.end() || 
+                currentPaths[enemy].empty() ||
+                pathIndices[enemy] >= currentPaths[enemy].size()) {
+                // We need a new path
+                needsNewPath = true;
+                std::cout << "Enemy reached end of path, calculating new path" << std::endl;
         } else {
-            std::cout << "Path found with " << path.size() << " steps" << std::endl;
-            moveEnemyAlongPath(enemy, path);
+                // Continue along the existing path
+                continueExistingPath(enemy);
+            }
+        }
+        
+        // Calculate a new path immediately if needed or wait for the normal interval
+        if (needsNewPath || frameCounter % 30 == 0) {
+            CalculatePathToPlayer(enemy);
         }
     }
     
     // Reset frame counter if it gets too large to prevent potential overflow
     if (frameCounter >= 6000) {
         frameCounter = 0;
+    }
+}
+
+// Helper method to calculate path to player for a specific enemy
+void PathFinding::CalculatePathToPlayer(std::shared_ptr<Enemy>& enemy) {
+    if (!enemy || !player) return;
+    
+    // Get current positions
+    int enemyX = static_cast<int>(enemy->p_position.x);
+    int enemyY = static_cast<int>(enemy->p_position.y);
+    int playerX = static_cast<int>(player->p_position.x);
+    int playerY = static_cast<int>(player->p_position.y);
+    
+    std::cout << "Enemy at (" << enemyX << "," << enemyY << "), Player at (" << playerX << "," << playerY << ")" << std::endl;
+    
+    // Make sure the positions are valid
+    if (enemyX < 0 || enemyY < 0 || playerX < 0 || playerY < 0) {
+        std::cout << "Invalid positions detected!" << std::endl;
+        return;
+    }
+    
+    // Use the enemy's configured heuristic
+    HeuristicType currentHeuristic = enemyHeuristics[enemy];
+    
+    // Find path to player
+    std::vector<std::pair<int, int>> path = findPath(enemyX, enemyY, playerX, playerY, currentHeuristic);
+    
+    if (path.empty()) {
+        std::cout << "No valid path found from enemy to player!" << std::endl;
+        
+        // Try a straight line if A* fails
+        if (enemyX < playerX) enemy->SeekTarget(enemyX + 1, enemyY);
+        else if (enemyX > playerX) enemy->SeekTarget(enemyX - 1, enemyY);
+        else if (enemyY < playerY) enemy->SeekTarget(enemyX, enemyY + 1);
+        else if (enemyY > playerY) enemy->SeekTarget(enemyX, enemyY - 1);
+    } else {
+        std::cout << "Path found with " << path.size() << " steps" << std::endl;
+        moveEnemyAlongPath(enemy, path);
     }
 }
 
@@ -452,17 +461,29 @@ void PathFinding::SetFleeingState(std::shared_ptr<Enemy>& enemy, bool fleeing) {
     isFleeing[enemy] = fleeing;
 }
 
+// Continue moving along the existing path
 void PathFinding::continueExistingPath(std::shared_ptr<Enemy>& enemy) {
+    // Check if we have a path for this enemy
     if (currentPaths.find(enemy) == currentPaths.end() || 
         currentPaths[enemy].empty() ||
         pathIndices[enemy] >= currentPaths[enemy].size()) {
         return;
     }
     
+    // Check if the enemy is in a direction change delay
     if (directionChangeDelay.find(enemy) != directionChangeDelay.end() && 
         directionChangeDelay[enemy] > 0) {
+        // Reduce the delay counter
         directionChangeDelay[enemy]--;
-        return; 
+        std::cout << "Waiting for direction change: " << directionChangeDelay[enemy] << " frames left" << std::endl;
+        return; // Don't move during delay
+    }
+    
+    // Check if the enemy is still moving to its current target
+    if (static_cast<int>(enemy->p_position.x) != static_cast<int>(enemy->m_position.x) ||
+        static_cast<int>(enemy->p_position.y) != static_cast<int>(enemy->m_position.y)) {
+        // Enemy is still moving, don't update target yet
+        return;
     }
     
     // Get current position and next position in path
@@ -481,20 +502,25 @@ void PathFinding::continueExistingPath(std::shared_ptr<Enemy>& enemy) {
     if (lastDirection.find(enemy) != lastDirection.end() && 
         lastDirection[enemy] != newDirection && 
         newDirection != NONE) {
+        // Direction changed, set delay counter
         directionChangeDelay[enemy] = DIRECTION_CHANGE_DELAY;
+        std::cout << "Direction changed during path! Adding delay." << std::endl;
         lastDirection[enemy] = newDirection;
-        return; 
+        return; // Don't move yet, wait for delay
     }
     
+    // Update the last direction
     if (newDirection != NONE) {
         lastDirection[enemy] = newDirection;
     }
     
+    std::cout << "Following path: moving enemy from (" << currentX << "," << currentY 
+              << ") to (" << nextX << "," << nextY << ") [Step " 
+              << currentIndex + 1 << "/" << currentPaths[enemy].size() << "]" << std::endl;
     
+    // Update enemy position based on its speed
     UpdateEnemyPosition(enemy, nextX, nextY);
     
-    if (static_cast<int>(enemy->p_position.x) == nextX && 
-        static_cast<int>(enemy->p_position.y) == nextY) {
-        pathIndices[enemy]++;
-    }
+    // Only increment the path index if we've set a new target position
+    pathIndices[enemy]++;
 }

@@ -10,6 +10,10 @@ Character::Character() {
 
 Character::~Character() {}
 
+void Character::loadResource(char* resource) {
+    this->resource = resource;
+}
+
 void Character::moveUp() {
     if (p_position.x == m_position.x && p_position.y == m_position.y) {
         this->m_position.y -= 1;
@@ -66,13 +70,18 @@ bool Character::isMoving(int p_x_fixed, int p_y_fixed, int m_x_fixed, int m_y_fi
 
 void Character::animate(float centerX, float centerY, float radius) {
     // Base animation is just a yellow circle
-    DrawCircle(centerX, centerY, radius, YELLOW);
+    if (this->resource == nullptr) {
+        DrawCircle(centerX, centerY, radius, YELLOW);
+    } else {
+        Texture2D sprite = LoadTexture(this->resource);
+        DrawTexture(sprite, centerX - radius, centerY - radius, WHITE);
+    }
 }
 
 
 void Character::DrawSelf(int t_size) {
     const int scale = 1000; 
-    const int stepSize = 100;
+    const int stepSize = 75;
 
     // Calculate fixed-point positions
     int p_x_fixed = static_cast<int>(p_position.x * scale);

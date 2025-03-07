@@ -37,14 +37,14 @@ class PathFinding {
         std::map<std::shared_ptr<Enemy>, size_t> pathIndices;
         std::map<std::shared_ptr<Enemy>, Direction> lastDirection;
         std::map<std::shared_ptr<Enemy>, int> directionChangeDelay;
-        const int DIRECTION_CHANGE_DELAY = 5; 
+        const int DIRECTION_CHANGE_DELAY = 0; 
         std::map<std::shared_ptr<Enemy>, bool> isFleeing;
         std::map<std::shared_ptr<Enemy>, Vector2> fleeTargets;
         std::map<std::shared_ptr<Enemy>, HeuristicType> enemyHeuristics;
         std::map<std::shared_ptr<Enemy>, float> enemySpeeds;
         std::map<std::shared_ptr<Enemy>, float> movementProgress;
         std::map<std::shared_ptr<Enemy>, int> enemyFrameCounters;
-        const float DEFAULT_ENEMY_SPEED = 3.0f;
+        const float DEFAULT_ENEMY_SPEED = 1.0f;
 
         PathFinding(std::shared_ptr<Level>& level);
         
@@ -71,6 +71,8 @@ class PathFinding {
         void SetEnemySpeed(std::shared_ptr<Enemy>& enemy, float speed);
 
         void UpdateEnemyPosition(std::shared_ptr<Enemy>& enemy, int nextX, int nextY);
+
+        void CalculatePathToPlayer(std::shared_ptr<Enemy>& enemy);
 };
 
 

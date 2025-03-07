@@ -110,6 +110,11 @@ int main() {
     std::shared_ptr<Enemy> inky = std::make_shared<Enemy>();   // Blue ghost - flank player
     std::shared_ptr<Enemy> clyde = std::make_shared<Enemy>();  // Orange ghost - random movement
 
+    blinky->loadResource("../assets/s.png");
+    pinky->loadResource("../assets/l.png");
+    clyde->loadResource("../assets/l.png");
+    inky->loadResource("../assets/l.png");
+
     l->CreateLevel(20, 20);
     
     BuildGameLevel(l, collider);
@@ -127,15 +132,15 @@ int main() {
         collider->RegisterCharacterBody(blinky);
         path->enemies.push_back(blinky);
         path->SetEnemyHeuristic(blinky, MANHATTAN); // Direct chase using Manhattan distance
-        path->SetEnemySpeed(blinky, 4.5f);          // Fast speed (tiles per second)
+        path->SetEnemySpeed(blinky, 1.0f);          // Fast speed (tiles per second)
     }
     
     if (ghostSpawns.size() >= 2) {
         l->AddGameObject(ghostSpawns[1].y, ghostSpawns[1].x, TILE_SIZE, pinky);
         collider->RegisterCharacterBody(pinky);
         path->enemies.push_back(pinky);
-        path->SetEnemyHeuristic(pinky, EUCLIDEAN); // Uses Euclidean distance
-        path->SetEnemySpeed(pinky, 4.0f);          // Medium-fast speed
+        path->SetEnemyHeuristic(pinky, DIAGONAL); // Uses Euclidean distance
+        path->SetEnemySpeed(pinky, 0.5f);          // Medium-fast speed
     }
     
     // Place additional ghosts if we have more spawn points
@@ -145,7 +150,7 @@ int main() {
         collider->RegisterCharacterBody(inky);
         path->enemies.push_back(inky);
         path->SetEnemyHeuristic(inky, DIAGONAL); // Uses diagonal/Chebyshev distance
-        path->SetEnemySpeed(inky, 3.5f);         // Medium speed
+        path->SetEnemySpeed(inky, 0.5f);         // Medium speed
     }
     
     if (ghostSpawns.size() >= 4) {
@@ -153,8 +158,8 @@ int main() {
         l->AddGameObject(clydeSpawn.y, clydeSpawn.x, TILE_SIZE, clyde);
         collider->RegisterCharacterBody(clyde);
         path->enemies.push_back(clyde);
-        path->SetEnemyHeuristic(clyde, NONE_HEURISTIC); // Uses Dijkstra's algorithm (no heuristic)
-        path->SetEnemySpeed(clyde, 3.0f);               // Slow speed
+        path->SetEnemyHeuristic(clyde, EUCLIDEAN); // Uses Dijkstra's algorithm (no heuristic)
+        path->SetEnemySpeed(clyde, 0.5f);               // Slow speed
     }
     
     // Register player with pathfinding so enemies can chase

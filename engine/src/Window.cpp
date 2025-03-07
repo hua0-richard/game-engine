@@ -71,6 +71,9 @@ void Window::Game(
     std::cout << "Game loop starting - enemy should start chasing player" << std::endl;
     
     while (!WindowShouldClose()) {
+        const char *workingDir = GetWorkingDirectory();
+        printf("Current Working Directory: %s\n", workingDir);
+        
         // Process game logic before rendering
         EnemyPathFinding(pathfinding);  // Update enemy pathfinding
         ProcessInput(inputHandler);     // Handle player input
