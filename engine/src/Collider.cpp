@@ -43,7 +43,6 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         }
         if (std::abs(this->TransparentBodies[i]->p_position.x - self->p_position.x) < 1 && 
             std::abs(this->TransparentBodies[i]->p_position.y - self->p_position.y) < 1) {
-            std::cout << "cheese" << std::endl;
             this->TransparentBodies[i]->Collision();
         }
     }
@@ -54,7 +53,6 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         }
         if (std::abs(this->CharacterBodies[i]->p_position.x - self->p_position.x) < 1 && 
             std::abs(this->CharacterBodies[i]->p_position.y - self->p_position.y) < 1) {
-            std::cout << "enemy" << std::endl;
         }
     }
 }

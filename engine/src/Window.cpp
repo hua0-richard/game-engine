@@ -65,14 +65,12 @@ void Window::Game(
 ) {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(level->tile_size * width, level->tile_size * height, title);
-    SetTargetFPS(60);
+    SetTargetFPS(30);
     
     // Print a message when the game starts
     std::cout << "Game loop starting - enemy should start chasing player" << std::endl;
     
     while (!WindowShouldClose()) {
-        const char *workingDir = GetWorkingDirectory();
-        printf("Current Working Directory: %s\n", workingDir);
         
         // Process game logic before rendering
         EnemyPathFinding(pathfinding);  // Update enemy pathfinding

@@ -66,9 +66,9 @@ class PathFinding {
         
         void SetFleeingState(std::shared_ptr<Enemy>& enemy, bool fleeing);
         
-        void SetEnemyHeuristic(std::shared_ptr<Enemy>& enemy, HeuristicType type);
+        void SetEnemyHeuristic(std::shared_ptr<Enemy> enemy, HeuristicType type);
 
-        void SetEnemySpeed(std::shared_ptr<Enemy>& enemy, float speed);
+        void SetEnemySpeed(std::shared_ptr<Enemy> enemy, float speed);
 
         void UpdateEnemyPosition(std::shared_ptr<Enemy>& enemy, int nextX, int nextY);
 

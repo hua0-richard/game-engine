@@ -17,7 +17,7 @@ void PathFinding::RegisterPlayer(std::shared_ptr<Player> t_player) {
     this->player = t_player;
 }
 
-void PathFinding::SetEnemyHeuristic(std::shared_ptr<Enemy>& enemy, HeuristicType type) {
+void PathFinding::SetEnemyHeuristic(std::shared_ptr<Enemy> enemy, HeuristicType type) {
     enemyHeuristics[enemy] = type;
     std::cout << "Set enemy heuristic to ";
     switch (type) {
@@ -29,7 +29,7 @@ void PathFinding::SetEnemyHeuristic(std::shared_ptr<Enemy>& enemy, HeuristicType
     std::cout << std::endl;
 }
 
-void PathFinding::SetEnemySpeed(std::shared_ptr<Enemy>& enemy, float speed) {
+void PathFinding::SetEnemySpeed(std::shared_ptr<Enemy> enemy, float speed) {
     if (speed <= 0.0f) {
         speed = DEFAULT_ENEMY_SPEED;
     }
@@ -351,7 +351,7 @@ void PathFinding::EnemyChase(HeuristicType heuristicType) {
         }
         
         // Calculate a new path immediately if needed or wait for the normal interval
-        if (needsNewPath || frameCounter % 30 == 0) {
+        if (needsNewPath || frameCounter % 180 == 0) {
             CalculatePathToPlayer(enemy);
         }
     }
@@ -387,15 +387,12 @@ void PathFinding::CalculatePathToPlayer(std::shared_ptr<Enemy>& enemy) {
     std::vector<std::pair<int, int>> path = findPath(enemyX, enemyY, playerX, playerY, currentHeuristic);
     
     if (path.empty()) {
-        std::cout << "No valid path found from enemy to player!" << std::endl;
-        
         // Try a straight line if A* fails
-        if (enemyX < playerX) enemy->SeekTarget(enemyX + 1, enemyY);
-        else if (enemyX > playerX) enemy->SeekTarget(enemyX - 1, enemyY);
-        else if (enemyY < playerY) enemy->SeekTarget(enemyX, enemyY + 1);
-        else if (enemyY > playerY) enemy->SeekTarget(enemyX, enemyY - 1);
+        // if (enemyX < playerX) enemy->SeekTarget(enemyX + 1, enemyY);
+        // else if (enemyX > playerX) enemy->SeekTarget(enemyX - 1, enemyY);
+        // else if (enemyY < playerY) enemy->SeekTarget(enemyX, enemyY + 1);
+        // else if (enemyY > playerY) enemy->SeekTarget(enemyX, enemyY - 1);
     } else {
-        std::cout << "Path found with " << path.size() << " steps" << std::endl;
         moveEnemyAlongPath(enemy, path);
     }
 }

@@ -10,6 +10,8 @@ protected:
     // Vector2 m_position;
     // Vector2 p_position;
     float facing_angle;
+    Texture2D cachedTexture;    // Cached texture to avoid reloading
+    bool textureLoaded = false; // Flag to track if texture is loaded
 
     // Animation related methods that can be overridden
     virtual void updateAnimation();
@@ -42,7 +44,6 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
-
 
 };
 
