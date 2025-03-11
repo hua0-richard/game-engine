@@ -20,6 +20,10 @@ public:
     Enemy();
     ~Enemy();
 
+    Vector2 spawn = {10.0f, 8.0f};
+    bool retreat = false; 
+    bool flee = false;
+
     // Movement methods
     void SeekTarget(int x_pos, int y_pos);
     void SetMoveSpeed(float speed);

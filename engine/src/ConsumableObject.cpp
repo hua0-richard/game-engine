@@ -1,7 +1,7 @@
 #include "ConsumableObject.h"
 
 void ConsumableObject::Collision() {
-    this->consumed = true; 
+    // this->consumed = true; 
 }
 
 
@@ -15,5 +15,9 @@ void ConsumableObject::DrawSelf(int t_size) {
     if (!consumed) {
         LoadSprite(t_size); 
     }
+}
+
+bool ConsumableObject::GetConsumed() {
+    return this->consumed;
 }
 

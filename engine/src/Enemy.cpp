@@ -16,6 +16,9 @@ Enemy::~Enemy() {
 
 void Enemy::SeekTarget(int x_pos, int y_pos) {
     // If smooth movement is enabled, apply some constraints
+    if (this->m_position.x == spawn.x && this->m_position.y == spawn.y) {
+        this->retreat = false;
+    }
     if (smoothMovement) {
         // Calculate the difference between current and target position
         float dx = static_cast<float>(x_pos) - this->p_position.x;

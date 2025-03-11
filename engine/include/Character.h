@@ -6,7 +6,6 @@
 
 class Character : public GameObject {
 protected:
-    char* resource = nullptr;
     // Vector2 m_position;
     // Vector2 p_position;
     float facing_angle;
@@ -21,8 +20,10 @@ protected:
     bool isMoving(int p_x_fixed, int p_y_fixed, int m_x_fixed, int m_y_fixed) const;
 
 public: 
+    char* resource = nullptr;
     virtual void loadResource(char* resource);
     virtual void animate(float centerX, float centerY, float radius);
+    virtual void CollisionVisitor(std::shared_ptr<GameObject> obj);
 
     enum Action {
         UP,

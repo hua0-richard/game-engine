@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include "GhostFleeMode.h"
 
 PathFinding::PathFinding(std::shared_ptr<Level>& level) {
     this->level = level;
@@ -19,7 +20,7 @@ void PathFinding::RegisterPlayer(std::shared_ptr<Player> t_player) {
 
 void PathFinding::SetEnemyHeuristic(std::shared_ptr<Enemy> enemy, HeuristicType type) {
     enemyHeuristics[enemy] = type;
-    std::cout << "Set enemy heuristic to ";
+    // std::cout << "Set enemy heuristic to ";
     switch (type) {
         case MANHATTAN: std::cout << "Manhattan"; break;
         case EUCLIDEAN: std::cout << "Euclidean"; break;
@@ -49,7 +50,7 @@ std::vector<std::vector<int>> PathFinding::Convert(std::shared_ptr<Level>& level
     }
     
     int width = level->level[0].size();
-    std::cout << "Converting level grid: " << width << "x" << height << std::endl;
+    // std::cout << "Converting level grid: " << width << "x" << height << std::endl;
     
     std::vector<std::vector<int>> grid(height, std::vector<int>(width, 0));
     
@@ -234,7 +235,6 @@ void PathFinding::UpdateEnemyPosition(std::shared_ptr<Enemy>& enemy, int nextX, 
     enemyFrameCounters[enemy] = 0;
     movementProgress[enemy] = 0.0f;
     
-    std::cout << "Set target position to (" << nextX << "," << nextY << ")" << std::endl;
 }
 
 void PathFinding::moveEnemyAlongPath(std::shared_ptr<Enemy>& enemy, const std::vector<std::pair<int, int>>& path) {
@@ -269,13 +269,13 @@ void PathFinding::moveEnemyAlongPath(std::shared_ptr<Enemy>& enemy, const std::v
     UpdateEnemyPosition(enemy, nextX, nextY);
     
     if (newDirection == RIGHT) {
-        std::cout << "Moving right" << std::endl;
+        // std::cout << "Moving right" << std::endl;
     } else if (newDirection == LEFT) {
-        std::cout << "Moving left" << std::endl;
+        // std::cout << "Moving left" << std::endl;
     } else if (newDirection == DOWN) {
-        std::cout << "Moving down" << std::endl;
+        // std::cout << "Moving down" << std::endl;
     } else if (newDirection == UP) {
-        std::cout << "Moving up" << std::endl;
+        // std::cout << "Moving up" << std::endl;
     }
 }
 
@@ -311,20 +311,6 @@ void PathFinding::EnemyChase(HeuristicType heuristicType) {
         // Initialize enemy heuristic if not set
         if (enemyHeuristics.find(enemy) == enemyHeuristics.end()) {
             enemyHeuristics[enemy] = heuristicType;
-        }
-        
-        // Skip enemies that are fleeing
-        if (isFleeing.find(enemy) != isFleeing.end() && isFleeing[enemy]) {
-            // Check if the enemy has reached its flee target
-            if (fleeTargets.find(enemy) != fleeTargets.end() && 
-                hasReachedTarget(enemy, fleeTargets[enemy])) {
-                // Enemy has reached flee target, return to chasing
-                std::cout << "Enemy reached flee target, returning to chase mode" << std::endl;
-                SetFleeingState(enemy, false);
-            } else {
-                // Still fleeing, skip chase logic
-                continue;
-            }
         }
         
         // Check if the enemy has reached its current target position
@@ -371,6 +357,16 @@ void PathFinding::CalculatePathToPlayer(std::shared_ptr<Enemy>& enemy) {
     int enemyY = static_cast<int>(enemy->p_position.y);
     int playerX = static_cast<int>(player->p_position.x);
     int playerY = static_cast<int>(player->p_position.y);
+
+    if (enemy->flee) {
+        playerX = 1;
+        playerY = 1; 
+    }
+    
+    if (enemy->retreat) {
+        playerX = enemy->spawn.x;
+        playerY = enemy->spawn.y;
+    }
     
     std::cout << "Enemy at (" << enemyX << "," << enemyY << "), Player at (" << playerX << "," << playerY << ")" << std::endl;
     
@@ -511,9 +507,9 @@ void PathFinding::continueExistingPath(std::shared_ptr<Enemy>& enemy) {
         lastDirection[enemy] = newDirection;
     }
     
-    std::cout << "Following path: moving enemy from (" << currentX << "," << currentY 
-              << ") to (" << nextX << "," << nextY << ") [Step " 
-              << currentIndex + 1 << "/" << currentPaths[enemy].size() << "]" << std::endl;
+    // std::cout << "Following path: moving enemy from (" << currentX << "," << currentY 
+    //           << ") to (" << nextX << "," << nextY << ") [Step " 
+    //           << currentIndex + 1 << "/" << currentPaths[enemy].size() << "]" << std::endl;
     
     // Update enemy position based on its speed
     UpdateEnemyPosition(enemy, nextX, nextY);

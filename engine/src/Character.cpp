@@ -166,3 +166,5 @@ void Character::CharacterCollision(Vector2 pos) {
     this->collision = true;
     // this->m_position.y = pos.y - 1; 
 }
+
+void Character::CollisionVisitor(std::shared_ptr<GameObject> obj) {}

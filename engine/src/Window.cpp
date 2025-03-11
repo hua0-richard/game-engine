@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Collider.h"
+#include "GhostFleeMode.h"
 #include <functional>
 
 Window::Window() {
@@ -24,13 +25,36 @@ void Window::Input() {
     
 }
 
-void Window::Update(std::vector<std::vector<std::shared_ptr<GameObject>>>& level, int t_size) {
+// this fixes the draw order
+std::vector<std::shared_ptr<GameObject>> Window::SortObjectDrawOrder(std::vector<std::vector<std::shared_ptr<GameObject>>>& level) {
+    std::vector<std::shared_ptr<GameObject>> characters; 
+    std::vector<std::shared_ptr<GameObject>> others; 
+    std::vector<std::shared_ptr<GameObject>> ordered; 
     for (auto& row: level) {
-        for (auto& gameObject: row) {
-            if (gameObject) {
-                gameObject->DrawSelf(t_size);
+        for (auto& gameObject: row){
+            if (std::dynamic_pointer_cast<Character>(gameObject)) {
+                characters.push_back(gameObject);
+            } else {
+                others.push_back(gameObject);
             }
-        } 
+        }
+    }
+    for (auto& o: others) {
+        ordered.push_back(o);
+    }
+    for (auto& c: characters) {
+        ordered.push_back(c);
+    }
+    return ordered; 
+ } 
+
+void Window::Update(std::vector<std::vector<std::shared_ptr<GameObject>>>& level, int t_size) {
+    std::vector<std::shared_ptr<GameObject>> ordered = this->SortObjectDrawOrder(level);
+    for (auto& gameObject: ordered) {
+        if (gameObject) {
+            gameObject->DrawSelf(t_size);
+        }
+    
     }
 }
 
@@ -48,9 +72,11 @@ void Window::Collision(std::shared_ptr<Collider>& collider) {
 }
 
 void Window::EnemyPathFinding(std::shared_ptr<PathFinding> pathfinding) {
-    // This is called every frame, but A* algorithm runs only every 60 frames
-    // (controlled by the frameCounter in the PathFinding class)
     pathfinding->EnemyChase(); 
+}
+
+void Window::UpdateFleeTimer() {
+    ::UpdateFleeTimer();
 }
 
 void Window::Game(
@@ -66,13 +92,11 @@ void Window::Game(
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(level->tile_size * width, level->tile_size * height, title);
     SetTargetFPS(30);
-    
-    // Print a message when the game starts
-    std::cout << "Game loop starting - enemy should start chasing player" << std::endl;
-    
+        
     while (!WindowShouldClose()) {
         
         // Process game logic before rendering
+        UpdateFleeTimer();              // Update the FLEE mode timer
         EnemyPathFinding(pathfinding);  // Update enemy pathfinding
         ProcessInput(inputHandler);     // Handle player input
         Collision(collider);            // Detect and resolve collisions

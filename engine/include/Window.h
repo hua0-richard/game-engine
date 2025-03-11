@@ -15,6 +15,8 @@ private:
     void Render(std::shared_ptr<Level>& level);
     void Collision(std::shared_ptr<Collider>& collider);
     void EnemyPathFinding(std::shared_ptr<PathFinding> pathfinding);
+    void UpdateFleeTimer();
+    std::vector<std::shared_ptr<GameObject>> SortObjectDrawOrder(std::vector<std::vector<std::shared_ptr<GameObject>>>& level); 
 
 public: 
     Window();

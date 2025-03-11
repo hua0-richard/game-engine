@@ -33,7 +33,7 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         }
         if (std::abs(this->RigidBodies[i]->p_position.x - self->p_position.x) < 1 && 
             std::abs(this->RigidBodies[i]->p_position.y - self->p_position.y) < 1) {
-            // self->Collision(this->RigidBodies[i]->p_position);
+            /// self->Collision(this->RigidBodies[i]->p_position);
         }
     }
 
@@ -44,6 +44,7 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         if (std::abs(this->TransparentBodies[i]->p_position.x - self->p_position.x) < 1 && 
             std::abs(this->TransparentBodies[i]->p_position.y - self->p_position.y) < 1) {
             this->TransparentBodies[i]->Collision();
+            self->CollisionVisitor(this->TransparentBodies[i]);
         }
     }
 
@@ -53,6 +54,8 @@ void Collider::HandleCollisions(std::shared_ptr<Character> self) {
         }
         if (std::abs(this->CharacterBodies[i]->p_position.x - self->p_position.x) < 1 && 
             std::abs(this->CharacterBodies[i]->p_position.y - self->p_position.y) < 1) {
+            self->CollisionVisitor(this->CharacterBodies[i]);
+            this->CharacterBodies[i]->Collision();
         }
     }
 }

@@ -2,6 +2,7 @@
 #define PACMAN_H
 
 #include "Player.h"
+#include "GameObject.h"
 #include <memory>
 
 class Pacman : public Player {
@@ -9,6 +10,7 @@ class Pacman : public Player {
         Pacman();
         ~Pacman();
         int score = 0; 
+        void CollisionVisitor(std::shared_ptr<GameObject> obj) override; 
 };
 
 #endif
