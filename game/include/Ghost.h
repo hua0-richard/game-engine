@@ -8,7 +8,8 @@ class Ghost: public Enemy {
         Texture2D eyeballSprite;
         bool texturesLoaded = false;
         bool didFlee = false; 
-        bool didRetreat = false; 
+        bool didRetreat = false;
+        float defaultSpeed = 0.5f;  
 
         Ghost();
         ~Ghost(); 

@@ -18,6 +18,7 @@ void Pacman::CollisionVisitor(std::shared_ptr<GameObject> obj) {
         if (FLEE) {
             if (ghost->didRetreat == false) {
                 ghost->retreat = true; 
+                ghost->SetMoveSpeed(2.0f);
             }
             ghost->didRetreat = true;
             ghost->flee = false;

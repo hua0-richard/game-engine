@@ -50,6 +50,7 @@ void Ghost::animate(float centerX, float centerY, float radius) {
     if (m_position.x == this->spawn.x && m_position.y == this->spawn.y) {
         std::cout << "false" << std::endl;
         this->retreat = false;
+        this->SetMoveSpeed(this->defaultSpeed);
     }
 
     if (this->retreat == true) {
