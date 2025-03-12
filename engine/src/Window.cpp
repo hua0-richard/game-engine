@@ -95,15 +95,22 @@ void Window::Game(
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     while (!WindowShouldClose()) {
 
+        if (IsKeyPressed(KEY_SPACE)) {
+            PAUSE = !PAUSE;
+        }
+
         if (!PAUSE) {
             UpdateFleeTimer();             
             EnemyPathFinding(pathfinding); 
             ProcessInput(inputHandler);    
             Collision(collider);        
-        }
+        } 
     
     BeginDrawing();
         Render(level);
+        if (PAUSE) {
+            DrawText("PAUSED", (width * tile_size / 2) - (2 * tile_size), height * tile_size / 2, tile_size, WHITE);
+        }
         EndDrawing();
     }
     
