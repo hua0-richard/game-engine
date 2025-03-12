@@ -8,6 +8,7 @@
 #include "Player.h"
 #include <memory>
 #include <vector>
+#include <cstring> 
 
 class Window {
 private:
