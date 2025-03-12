@@ -25,11 +25,22 @@ void Pacman::CollisionVisitor(std::shared_ptr<GameObject> obj) {
                 ghost->didRetreat = true;
                 ghost->flee = false;
             } else if (ghost->didRetreat == true) {
-                PAUSE = true;
+                if (this->lives > 0) {
+                    this->lives -= 1; 
+                }
+                if (this->lives == 0) {
+                    GAME_OVER = true; 
+                }
+                std::cout << "dead" << std::endl;            
             }
             std::cout << "retreat" << std::endl;
         } else {
-            PAUSE = true;
+            if (this->lives > 0) {
+                this->lives -= 1; 
+            }
+            if (this->lives == 0) {
+                GAME_OVER = true; 
+            }
             std::cout << "dead" << std::endl; 
         }
     }
@@ -39,7 +50,7 @@ void Pacman::CollisionVisitor(std::shared_ptr<GameObject> obj) {
             FLEE = true;
             powerPellet->consumed = true;
             std::cout << "power pellet" << std::endl;
-            StartFleeTimer(300); // 10 seconds at 30 FPS
+            StartFleeTimer(300);
             this->score += 200;
         }
     }

@@ -96,14 +96,16 @@ void Window::Game(
     while (!WindowShouldClose()) {
 
         if (IsKeyPressed(KEY_SPACE)) {
-            if (!READY) {
-                READY = true;
-            } else {
-                PAUSE = !PAUSE;
+            if (!GAME_OVER) {
+                if (!READY) {
+                    READY = true;
+                } else {
+                    PAUSE = !PAUSE;
+                }
             }
         }
 
-        if (!PAUSE && READY) {
+        if (!PAUSE && READY && !GAME_OVER) {
             UpdateFleeTimer();             
             EnemyPathFinding(pathfinding); 
             ProcessInput(inputHandler);    
@@ -122,6 +124,10 @@ void Window::Game(
 
         if (PAUSE) {
             DrawText("PAUSED", (width * tile_size / 2) - (2 * tile_size), height * tile_size / 2, tile_size, WHITE);
+        }
+
+        if (GAME_OVER) {
+            DrawText("GAME OVER!", (width * tile_size / 2) - (3 * tile_size), height * tile_size / 2, tile_size, WHITE);
         }
         DrawGUI(height, width, tile_size);
         EndDrawing();

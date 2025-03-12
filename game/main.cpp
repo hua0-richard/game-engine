@@ -174,7 +174,6 @@ void run() {
     window->RegisterPlayer(pacman);
     window->AddBottomBar(TILE_SIZE, 1, "Score:", "Lives:");
     window->Game(input, l, collider, path, 20, 20, "Pacman", TILE_SIZE);
-    
 }
 
 int main() {

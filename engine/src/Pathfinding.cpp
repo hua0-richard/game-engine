@@ -8,6 +8,7 @@
 #include <functional>
 #include <iostream>
 #include "Flee.h"
+#include <random>
 
 PathFinding::PathFinding(std::shared_ptr<Level>& level) {
     this->level = level;
@@ -358,7 +359,7 @@ void PathFinding::CalculatePathToPlayer(std::shared_ptr<Enemy>& enemy) {
     int playerX = static_cast<int>(player->p_position.x);
     int playerY = static_cast<int>(player->p_position.y);
 
-    if (enemy->flee) {
+    if (enemy->flee) {  
         playerX = 1;
         playerY = 1; 
     }
