@@ -37,12 +37,14 @@ void Pacman::CollisionVisitor(std::shared_ptr<GameObject> obj) {
             powerPellet->consumed = true;
             std::cout << "power pellet" << std::endl;
             StartFleeTimer(300); // 10 seconds at 30 FPS
+            this->score += 200;
         }
     }
     else if (auto consumable = std::dynamic_pointer_cast<ConsumableObject>(obj)) {
         if (!consumable->GetConsumed()) {
             consumable->consumed = true;
             std::cout << "pellet" << std::endl;
+            this->score += 10; 
         }
     }
 }

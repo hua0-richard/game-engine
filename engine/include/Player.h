@@ -7,6 +7,8 @@
 
 class Player : public Character {
 public:
+    int score = 0;
+    int lives = 1; 
     Player();
     ~Player();
 };

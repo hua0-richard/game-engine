@@ -171,6 +171,8 @@ void run() {
     input->RegisterPlayerEvent(KEY_UP, Player::UP);
 
     std::unique_ptr<Window> window = std::make_unique<Window>();
+    window->RegisterPlayer(pacman);
+    window->AddBottomBar(TILE_SIZE, 1, "Score:", "Lives:");
     window->Game(input, l, collider, path, 20, 20, "Pacman", TILE_SIZE);
     
 }

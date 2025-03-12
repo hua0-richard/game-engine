@@ -90,7 +90,7 @@ void Window::Game(
     const char* title,
     int tile_size
 ) {
-    InitWindow(level->tile_size * width, level->tile_size * height, title);
+    InitWindow(level->tile_size * width, level->tile_size * height + BottomBarHeight, title);
     SetTargetFPS(30);
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     while (!WindowShouldClose()) {
@@ -106,19 +106,43 @@ void Window::Game(
             Collision(collider);        
         } 
     
-    BeginDrawing();
+        // Update score before drawing
+        UpdateScore();
+        
+        BeginDrawing();
         Render(level);
         if (PAUSE) {
             DrawText("PAUSED", (width * tile_size / 2) - (2 * tile_size), height * tile_size / 2, tile_size, WHITE);
         }
+        DrawGUI(height, width, tile_size);
         EndDrawing();
     }
     
     CloseWindow();
 }
 
-// void Window::AddTopBar(int t_size = 16, int height, std::string leftText, std::string rightText) {
-// }
+void Window::DrawGUI(int height, int width, int tile_size) {
+    std::string scoreStr = std::string(this->leftBottomText) + " " + std::to_string(this->playerScore);
+    DrawText(scoreStr.c_str(), 0, tile_size * height, tile_size, WHITE);
+    std::string livesStr = std::string(this->rightBottomText) + " " + std::to_string(this->playerLives);
+    DrawText(livesStr.c_str(), (width * tile_size) - ((strlen(this->rightBottomText)* tile_size) / 3) - tile_size, tile_size * height, tile_size, WHITE);
+}
 
-// void Window::AddBottomBar(int t_size = 16, int height, std::string leftText, std::string rightText) {
-// }
+void Window::AddBottomBar(int t_size, int height, const char* leftText, const char* rightText) {
+    this->BottomBarHeight = height * t_size; 
+    this->leftBottomText = leftText;
+    this->rightBottomText = rightText; 
+}
+
+// Add method to register the player for score updates
+void Window::RegisterPlayer(std::shared_ptr<Player> player) {
+    this->player = player;
+}
+
+// Add method to update the player score
+void Window::UpdateScore() {
+    if (this->player) {
+        this->playerScore = this->player->score;
+        this->playerLives = this->player->lives; 
+    }
+}
