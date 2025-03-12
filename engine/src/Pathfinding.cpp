@@ -360,9 +360,14 @@ void PathFinding::CalculatePathToPlayer(std::shared_ptr<Enemy>& enemy) {
     int playerY = static_cast<int>(player->p_position.y);
 
     if (enemy->flee) {  
-        playerX = 1;
-        playerY = 1; 
-    }
+        if (enemy->m_position.x == enemy->fleeLocation.x && enemy->m_position.y == enemy->fleeLocation.y) {
+            playerX = playerX;
+            playerY = playerY;
+        } else {
+            playerX = enemy->fleeLocation.x;
+            playerY = enemy->fleeLocation.y;
+        }
+    }   
     
     if (enemy->retreat) {
         playerX = enemy->spawn.x;

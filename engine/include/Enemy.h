@@ -21,6 +21,7 @@ public:
     ~Enemy();
 
     Vector2 spawn = {10.0f, 8.0f};
+    Vector2 fleeLocation = {1.0f, 1.0f};
     bool retreat = false; 
     bool flee = false;
 

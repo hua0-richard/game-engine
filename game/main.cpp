@@ -123,6 +123,13 @@ void run() {
     inky->SetMoveSpeed(0.26f);
     pinky->SetMoveSpeed(0.26f);
 
+    blinky->fleeLocation = Vector2{1.0f, 1.0f};
+    clyde->fleeLocation = Vector2{18.0f, 1.0f};
+    inky->fleeLocation = Vector2{18.0f, 1.0f};
+    pinky->fleeLocation = Vector2{18.0f, 18.0f};
+    
+
+
     l->CreateLevel(20, 20);
     
     BuildGameLevel(l, collider);
