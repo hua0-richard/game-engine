@@ -7,7 +7,10 @@
 #include "Pathfinding.h"
 #include "Pause.h"
 
-Pacman::Pacman() {}
+Pacman::Pacman() {
+    this->score = 0;
+    this->lives = 1;
+}
 Pacman::~Pacman() {}
 
 void Pacman::CollisionVisitor(std::shared_ptr<GameObject> obj) {

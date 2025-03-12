@@ -125,7 +125,7 @@ void Window::DrawGUI(int height, int width, int tile_size) {
     std::string scoreStr = std::string(this->leftBottomText) + " " + std::to_string(this->playerScore);
     DrawText(scoreStr.c_str(), 0, tile_size * height, tile_size, WHITE);
     std::string livesStr = std::string(this->rightBottomText) + " " + std::to_string(this->playerLives);
-    DrawText(livesStr.c_str(), (width * tile_size) - ((strlen(this->rightBottomText)* tile_size) / 3) - tile_size, tile_size * height, tile_size, WHITE);
+    DrawText(livesStr.c_str(), (width * tile_size) - ((strlen(this->rightBottomText) * tile_size) / 3) - (tile_size * 2), tile_size * height, tile_size, WHITE);
 }
 
 void Window::AddBottomBar(int t_size, int height, const char* leftText, const char* rightText) {
