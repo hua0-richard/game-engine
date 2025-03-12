@@ -13,7 +13,7 @@
 
 using namespace std;
 
-const int TILE_SIZE = 16; 
+const int TILE_SIZE = 32; 
 
 // 0 = empty space (path)
 // 1 = wall

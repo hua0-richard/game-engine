@@ -2,7 +2,9 @@ engine/raylib/
 engine/include/raylib.h
 engine/build 
 engine/lib/libraylib.a
+engine/build/libengine.a
 game/build
 .DS_STORE
 main
 main.exe
+.vscode
