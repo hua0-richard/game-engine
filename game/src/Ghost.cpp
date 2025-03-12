@@ -1,5 +1,5 @@
 #include "Ghost.h"
-#include "GhostFleeMode.h"
+#include "Flee.h"
 
 Ghost::Ghost() {
     // Initialize default values in the constructor

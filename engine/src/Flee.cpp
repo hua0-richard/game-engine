@@ -1,8 +1,8 @@
-#include "GhostFleeMode.h"
+#include "Flee.h"
 #include <iostream>
 
 bool FLEE = false;
-int FLEE_DURATION = 600; // Default 10 seconds at 30 FPS
+int FLEE_DURATION = 600;
 int FLEE_TIMER = 0;
 
 void StartFleeTimer(int duration) {

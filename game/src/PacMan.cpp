@@ -3,8 +3,9 @@
 #include "raylib.h"
 #include "ConsumableObject.h"
 #include "PowerPellet.h"
-#include "GhostFleeMode.h"
+#include "Flee.h"
 #include "Pathfinding.h"
+#include "Pause.h"
 
 Pacman::Pacman() {}
 Pacman::~Pacman() {}
@@ -12,18 +13,20 @@ Pacman::~Pacman() {}
 void Pacman::CollisionVisitor(std::shared_ptr<GameObject> obj) {
     if (auto ghost = std::dynamic_pointer_cast<Ghost>(obj)) {
         // CloseWindow();
-
         std::cout << "ghost" << std::endl;
     if (ghost->retreat == false){
         if (FLEE) {
             if (ghost->didRetreat == false) {
                 ghost->retreat = true; 
                 ghost->SetMoveSpeed(2.0f);
+                ghost->didRetreat = true;
+                ghost->flee = false;
+            } else if (ghost->didRetreat == true) {
+                PAUSE = true;
             }
-            ghost->didRetreat = true;
-            ghost->flee = false;
             std::cout << "retreat" << std::endl;
         } else {
+            PAUSE = true;
             std::cout << "dead" << std::endl; 
         }
     }

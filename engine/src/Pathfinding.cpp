@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
-#include "GhostFleeMode.h"
+#include "Flee.h"
 
 PathFinding::PathFinding(std::shared_ptr<Level>& level) {
     this->level = level;

@@ -9,6 +9,7 @@
 #include "ConsumableObject.h"
 #include "PowerPellet.h"
 #include "Ghost.h"
+#include "Pause.h"
 
 using namespace std;
 
@@ -95,21 +96,18 @@ void BuildGameLevel(std::shared_ptr<Level> &level, std::shared_ptr<Collider> &co
     }
 }
 
-int main() {
-    // Create Level Player Enemy
+void run() {
     std::shared_ptr<Collider> collider = std::make_shared<Collider>();
     std::shared_ptr<Level> l = std::make_shared<Level>(TILE_SIZE);
     std::shared_ptr<PathFinding> path = std::make_shared<PathFinding>(l);
     std::unique_ptr<InputHandler> input = std::make_unique<InputHandler>(collider);
     
-    // Create Pacman and ghosts
     std::shared_ptr<Pacman> pacman = std::make_shared<Pacman>();
     
-    // Define ghost characters with different colors/behaviors
-    std::shared_ptr<Ghost> blinky = std::make_shared<Ghost>(); // Red ghost - direct chase
-    std::shared_ptr<Ghost> pinky = std::make_shared<Ghost>();  // Pink ghost - anticipate player
-    std::shared_ptr<Ghost> inky = std::make_shared<Ghost>();   // Blue ghost - flank player
-    std::shared_ptr<Ghost> clyde = std::make_shared<Ghost>();  // Orange ghost - random movement
+    std::shared_ptr<Ghost> blinky = std::make_shared<Ghost>(); 
+    std::shared_ptr<Ghost> pinky = std::make_shared<Ghost>();  
+    std::shared_ptr<Ghost> inky = std::make_shared<Ghost>();   
+    std::shared_ptr<Ghost> clyde = std::make_shared<Ghost>();  
 
     blinky->loadResource("../assets/red.png");
     pinky->loadResource("../assets/pink.png");
@@ -120,70 +118,63 @@ int main() {
     blinky->SetMoveSpeed(0.6f);
     pinky->SetMoveSpeed(0.6f);
 
-    clyde->SetSmoothMovement(true);
+    blinky->SetSmoothMovement(true);
     clyde->SetSmoothMovement(true);
     inky->SetMoveSpeed(0.26f);
-    clyde->SetMoveSpeed(0.26f);
+    pinky->SetMoveSpeed(0.26f);
 
     l->CreateLevel(20, 20);
     
     BuildGameLevel(l, collider);
     
     Vector2 playerSpawn = {9, 16}; 
-    std::vector<Vector2> ghostSpawns = {{9, 8}, {10, 8}, {9, 8}, {9, 8}}; // Default positions from level
+    std::vector<Vector2> ghostSpawns = {{9, 8}, {10, 8}, {9, 8}, {12, 8}};
     
-    // Place Pacman at the spawn point
     l->AddGameObject(playerSpawn.y, playerSpawn.x, TILE_SIZE, pacman);
     collider->RegisterCharacterBody(pacman);
     
-    // Place ghosts at their spawn points with different heuristics
-    if (ghostSpawns.size() >= 1) {
-        l->AddGameObject(ghostSpawns[0].y, ghostSpawns[0].x, TILE_SIZE, blinky);
-        collider->RegisterCharacterBody(blinky);
-        path->enemies.push_back(blinky);
-        path->SetEnemyHeuristic(blinky, MANHATTAN); // Direct chase using Manhattan distance
-        path->SetEnemySpeed(blinky, 0.25f);          // Fast speed (tiles per second)
-    }
+    l->AddGameObject(ghostSpawns[0].y, ghostSpawns[0].x, TILE_SIZE, blinky);
+    collider->RegisterCharacterBody(blinky);
+    path->enemies.push_back(blinky);
+    path->SetEnemyHeuristic(blinky, MANHATTAN); 
+    path->SetEnemySpeed(blinky, 0.25f);          
+
+
+    l->AddGameObject(ghostSpawns[1].y, ghostSpawns[1].x, TILE_SIZE, pinky);
+    collider->RegisterCharacterBody(pinky);
+    path->enemies.push_back(pinky);
+    path->SetEnemyHeuristic(pinky, DIAGONAL); 
+    path->SetEnemySpeed(pinky, 0.25f);         
+
+
+    Vector2 inkySpawn = {ghostSpawns[2].x - 1, ghostSpawns[2].y};
+    l->AddGameObject(inkySpawn.y, inkySpawn.x, TILE_SIZE, inky);
+    collider->RegisterCharacterBody(inky);
+    path->enemies.push_back(inky);
+    path->SetEnemyHeuristic(inky, NONE_HEURISTIC); 
+    path->SetEnemySpeed(inky, 0.25f); 
+
+
+    Vector2 clydeSpawn = {ghostSpawns[3].x - 1, ghostSpawns[3].y};
+    l->AddGameObject(clydeSpawn.y, clydeSpawn.x, TILE_SIZE, clyde);
+    collider->RegisterCharacterBody(clyde);
+    path->enemies.push_back(clyde);
+    path->SetEnemyHeuristic(clyde, EUCLIDEAN);
+    path->SetEnemySpeed(clyde, 0.25f);      
+          
     
-    if (ghostSpawns.size() >= 2) {
-        l->AddGameObject(ghostSpawns[1].y, ghostSpawns[1].x, TILE_SIZE, pinky);
-        collider->RegisterCharacterBody(pinky);
-        path->enemies.push_back(pinky);
-        path->SetEnemyHeuristic(pinky, DIAGONAL); // Uses Euclidean distance
-        path->SetEnemySpeed(pinky, 0.25f);          // Medium-fast speed
-    }
-    
-    // Place additional ghosts if we have more spawn points
-    if (ghostSpawns.size() >= 3) {
-        Vector2 inkySpawn = {ghostSpawns[0].x - 1, ghostSpawns[0].y};
-        l->AddGameObject(inkySpawn.y, inkySpawn.x, TILE_SIZE, inky);
-        collider->RegisterCharacterBody(inky);
-        path->enemies.push_back(inky);
-        path->SetEnemyHeuristic(inky, NONE_HEURISTIC); // Uses diagonal/Chebyshev distance
-        path->SetEnemySpeed(inky, 0.25f);         // Medium speed
-    }
-    
-    if (ghostSpawns.size() >= 4) {
-        Vector2 clydeSpawn = {ghostSpawns[0].x - 1, ghostSpawns[0].y};
-        l->AddGameObject(clydeSpawn.y, clydeSpawn.x, TILE_SIZE, clyde);
-        collider->RegisterCharacterBody(clyde);
-        path->enemies.push_back(clyde);
-        path->SetEnemyHeuristic(clyde, EUCLIDEAN); // Uses Dijkstra's algorithm (no heuristic)
-        path->SetEnemySpeed(clyde, 0.25f);               // Slow speed
-    }
-    
-    // Register player with pathfinding so enemies can chase
     path->RegisterPlayer(pacman);
-    
-    // Register Player Actions
     input->RegisterPlayer(pacman);
     input->RegisterPlayerEvent(KEY_RIGHT, Player::RIGHT);
     input->RegisterPlayerEvent(KEY_LEFT, Player::LEFT);
     input->RegisterPlayerEvent(KEY_DOWN, Player::DOWN);
     input->RegisterPlayerEvent(KEY_UP, Player::UP);
 
-    // Create Window 
     std::unique_ptr<Window> window = std::make_unique<Window>();
-
     window->Game(input, l, collider, path, 20, 20, "Pacman", TILE_SIZE);
+    
+}
+
+int main() {
+    run();
 }

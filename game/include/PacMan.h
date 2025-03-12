@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "GameObject.h"
 #include <memory>
+#include "Pause.h"
+#include "Flee.h"
 
 class Pacman : public Player {
     public: 

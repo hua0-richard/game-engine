@@ -9,7 +9,8 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Collider.h"
-#include "GhostFleeMode.h"
+#include "Flee.h"
+#include "Pause.h"
 #include <functional>
 
 Window::Window() {
@@ -89,27 +90,28 @@ void Window::Game(
     const char* title,
     int tile_size
 ) {
-    SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(level->tile_size * width, level->tile_size * height, title);
     SetTargetFPS(30);
-        
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     while (!WindowShouldClose()) {
-        
-        // Process game logic before rendering
-        UpdateFleeTimer();              // Update the FLEE mode timer
-        EnemyPathFinding(pathfinding);  // Update enemy pathfinding
-        ProcessInput(inputHandler);     // Handle player input
-        Collision(collider);            // Detect and resolve collisions
-        
-        // Begin rendering frame
-        BeginDrawing();
-        
-        // Render the game world
+
+        if (!PAUSE) {
+            UpdateFleeTimer();             
+            EnemyPathFinding(pathfinding); 
+            ProcessInput(inputHandler);    
+            Collision(collider);        
+        }
+    
+    BeginDrawing();
         Render(level);
-        
-        // End rendering frame
         EndDrawing();
     }
     
     CloseWindow();
 }
+
+// void Window::AddTopBar(int t_size = 16, int height, std::string leftText, std::string rightText) {
+// }
+
+// void Window::AddBottomBar(int t_size = 16, int height, std::string leftText, std::string rightText) {
+// }

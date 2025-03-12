@@ -16,6 +16,7 @@ private:
     void Collision(std::shared_ptr<Collider>& collider);
     void EnemyPathFinding(std::shared_ptr<PathFinding> pathfinding);
     void UpdateFleeTimer();
+    void UpdateGUI(); 
     std::vector<std::shared_ptr<GameObject>> SortObjectDrawOrder(std::vector<std::vector<std::shared_ptr<GameObject>>>& level); 
 
 public: 
@@ -34,6 +35,8 @@ public:
         const char* title = "Game", 
         int tile_size = 16
     );
+    // void AddTopBar(int t_size = 16, int height, std::string leftText, std::string rightText);
+    // void AddBottomBar(int t_size = 16, int height, std::string leftText, std::string rightText); 
 };
 
 #endif
