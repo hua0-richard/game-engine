@@ -13,7 +13,7 @@
 
 using namespace std;
 
-const int TILE_SIZE = 32; 
+const int TILE_SIZE = 16; 
 
 // 0 = empty space (path)
 // 1 = wall
@@ -129,7 +129,6 @@ void run() {
     pinky->fleeLocation = Vector2{18.0f, 18.0f};
     
 
-
     l->CreateLevel(20, 20);
     
     BuildGameLevel(l, collider);
@@ -179,7 +178,13 @@ void run() {
 
     std::unique_ptr<Window> window = std::make_unique<Window>();
     window->RegisterPlayer(pacman);
-    window->AddBottomBar(TILE_SIZE, 1, "Score:", "Lives:");
+    window->AddBottomBar(TILE_SIZE, 1);
+    
+    window->leftBottomText->AppendText("Score: ", pacman->score, " ", "Lives: ", pacman->lives);
+    
+    window->rightBottomText->AppendText("Lives: ");
+    window->rightBottomText->AppendText(pacman->lives);
+    
     window->Game(input, l, collider, path, 20, 20, "Pacman", TILE_SIZE);
 }
 

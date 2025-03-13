@@ -111,9 +111,6 @@ void Window::Game(
             ProcessInput(inputHandler);    
             Collision(collider);        
         } 
-    
-        // Update score before drawing
-        UpdateScore();
         
         BeginDrawing();
         Render(level);
@@ -137,27 +134,17 @@ void Window::Game(
 }
 
 void Window::DrawGUI(int height, int width, int tile_size) {
-    std::string scoreStr = std::string(this->leftBottomText) + " " + std::to_string(this->playerScore);
-    DrawText(scoreStr.c_str(), 0, tile_size * height, tile_size, WHITE);
-    std::string livesStr = std::string(this->rightBottomText) + " " + std::to_string(this->playerLives);
-    DrawText(livesStr.c_str(), (width * tile_size) - ((strlen(this->rightBottomText) * tile_size) / 3) - (tile_size * 2), tile_size * height, tile_size, WHITE);
+    DrawText(this->leftBottomText->ReturnText().c_str(), 0, tile_size * height, tile_size, WHITE);
+    std::string rightText = this->rightBottomText->ReturnText();
+    int rightTextWidth = rightText.length() * (tile_size / 2); 
+    DrawText(rightText.c_str(), (width * tile_size) - rightTextWidth, tile_size * height, tile_size, WHITE);
 }
 
-void Window::AddBottomBar(int t_size, int height, const char* leftText, const char* rightText) {
+void Window::AddBottomBar(int t_size, int height) {
     this->BottomBarHeight = height * t_size; 
-    this->leftBottomText = leftText;
-    this->rightBottomText = rightText; 
 }
 
 // Add method to register the player for score updates
 void Window::RegisterPlayer(std::shared_ptr<Player> player) {
     this->player = player;
-}
-
-// Add method to update the player score
-void Window::UpdateScore() {
-    if (this->player) {
-        this->playerScore = this->player->score;
-        this->playerLives = this->player->lives; 
-    }
 }

@@ -9,13 +9,12 @@
 #include <memory>
 #include <vector>
 #include <cstring> 
+#include "Text.h"
 
 class Window {
 private:
     int BottomBarHeight = 0;
     int TopBarHeight = 0;
-    const char* leftBottomText = ""; 
-    const char* rightBottomText = "";
     int playerScore = 0;
     int playerLives = 0;
     std::shared_ptr<Player> player;
@@ -28,6 +27,9 @@ private:
     void DrawGUI(int height, int width, int tile_size = 16); 
     std::vector<std::shared_ptr<GameObject>> SortObjectDrawOrder(std::vector<std::vector<std::shared_ptr<GameObject>>>& level); 
 public: 
+    std::shared_ptr<Text> leftBottomText = std::make_shared<Text>();
+    std::shared_ptr<Text> rightBottomText = std::make_shared<Text>();
+
     Window();
     ~Window();
     void Clear();
@@ -43,7 +45,7 @@ public:
         const char* title = "Game", 
         int tile_size = 16
     );
-    void AddBottomBar(int t_size = 16, int height = 0, const char* leftText = "", const char* rightText = ""); 
+    void AddBottomBar(int t_size = 16, int height = 0); 
     void RegisterPlayer(std::shared_ptr<Player> player);
     void UpdateScore();
 };
