@@ -18,8 +18,4 @@ Animations
 Fixed Frame Rate 
 Multiple Key Stroke Inputs
 
-Ease of use for APIs
-
-pathfniding timer
-24 fps sprite
 
